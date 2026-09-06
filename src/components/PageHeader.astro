@@ -1,0 +1,34 @@
+---
+import Placard from './Placard.astro';
+interface Props {
+  title: string;
+  lede?: string;
+  crumbs?: { label: string; href: string }[];
+  tone?: 'yellow' | 'black';
+}
+const { title, lede, crumbs = [], tone = 'yellow' } = Astro.props;
+---
+<Placard tone={tone} bleed={true} class="ph">
+  <div class="wrap">
+    <nav aria-label="Breadcrumb" class="crumbs">
+      <ol>
+        <li><a href="/">Home</a></li>
+        {crumbs.map((c) => (<li><a href={c.href}>{c.label}</a></li>))}
+        <li><span aria-current="page">{title}</span></li>
+      </ol>
+    </nav>
+    <h1>{title}</h1>
+    {lede && <p class="lede ph__lede">{lede}</p>}
+    <slot />
+  </div>
+</Placard>
+
+<style>
+  .ph { padding-block: clamp(2rem, 1.4rem + 3vw, 4rem) clamp(2rem, 1.4rem + 2.6vw, 3.5rem); }
+  .crumbs ol { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 0 0 1.5rem; padding: 0; font-size: var(--t-1); font-weight: 500; color: var(--fg2); }
+  .crumbs li + li::before { content: '/'; margin-inline-end: 0.5rem; }
+  .crumbs a { color: var(--fg2); text-decoration: none; }
+  .crumbs a:hover { color: var(--fg); text-decoration: underline; }
+  .ph h1 { max-width: 16ch; }
+  .ph__lede { margin-block-start: 1.25rem; max-width: 52ch; }
+</style>

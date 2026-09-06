@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  # Brand assets in public/ are committed, so CI does not need a browser.
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"

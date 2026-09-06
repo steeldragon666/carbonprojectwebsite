@@ -1,0 +1,31 @@
+---
+import Placard from './Placard.astro';
+import { site } from '../data/site';
+interface Props { title?: string; body?: string; primary?: string; }
+const {
+  title = 'Tell us what you need.',
+  body = 'A short call and a written brief that says what we will do and what it costs. No obligation beyond that.',
+  primary = 'Book a scoping call',
+} = Astro.props;
+---
+<div class="wrap band">
+  <Placard tone="yellow" class="cta">
+    <div class="cta__in">
+      <div>
+        <h2>{title}</h2>
+        <p class="lede" style="margin-block-start:1rem">{body}</p>
+      </div>
+      <div class="cta__act">
+        <a class="sw" href="/contact/">{primary}</a>
+        <p class="small sub">Or email <a class="lk" href={`mailto:${site.email}`}>{site.email}</a>. {site.responseTime}</p>
+      </div>
+    </div>
+  </Placard>
+</div>
+
+<style>
+  .cta__in { display: grid; gap: 2rem; align-items: end; }
+  @media (min-width: 56rem) { .cta__in { grid-template-columns: minmax(0, 1fr) auto; gap: 3rem; } }
+  .cta h2 { max-width: 14ch; }
+  .cta__act { display: grid; gap: 0.9rem; justify-items: start; max-width: 30ch; }
+</style>

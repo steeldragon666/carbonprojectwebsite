@@ -1,0 +1,75 @@
+---
+import { site, nav, cta } from '../data/site';
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+<header class="rail">
+  <div class="wrap rail__in">
+    <a href="/" class="asset" aria-label={`${site.name} — home`}>
+      <span class="asset__tag" aria-hidden="true">CP</span>
+      <span class="asset__name">{site.name}</span>
+    </a>
+    <nav class="rail__nav" aria-label="Primary">
+      <ul>
+        {nav.map((n) => (
+          <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a href={cta.href} class="sw sw--sm rail__cta">{cta.label}</a>
+  </div>
+</header>
+
+<style>
+  .rail {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--black);
+    border-bottom: 2px solid var(--steel);
+  }
+  .rail__in {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 0 1.5rem; min-height: 3.5rem;
+  }
+  .asset { display: inline-flex; align-items: stretch; text-decoration: none; padding-block: 0.55rem; }
+  .asset__tag {
+    display: inline-flex; align-items: center;
+    padding: 0.2rem 0.5rem;
+    background: var(--yellow); color: var(--black);
+    font-family: var(--display); font-weight: 800; font-size: 1.05rem; letter-spacing: 0.04em;
+  }
+  .asset__name {
+    display: inline-flex; align-items: center;
+    padding: 0.2rem 0.65rem;
+    border: 2px solid var(--yellow); border-left: 0;
+    font-family: var(--display); font-weight: 700; font-size: 0.95rem;
+    text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap;
+  }
+  @media (max-width: 26rem) { .asset__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
+
+  .rail__cta { order: 2; }
+  .rail__nav {
+    order: 3;
+    flex: 1 0 100%;
+    overflow-x: auto; scrollbar-width: none;
+    margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter);
+    border-top: 1px solid var(--steel);
+  }
+  .rail__nav::-webkit-scrollbar { display: none; }
+  .rail__nav ul { display: flex; align-items: center; gap: 1.2rem; list-style: none; margin: 0; padding: 0; width: max-content; }
+  .rail__nav a:not(.sw) {
+    display: block; padding-block: 0.7rem;
+    font-weight: 500; font-size: var(--t-1); color: var(--ink2-k); text-decoration: none; white-space: nowrap;
+    border-bottom: 3px solid transparent;
+  }
+  .rail__nav a:not(.sw):hover { color: var(--white); }
+  .rail__nav a[aria-current='page'] { color: var(--white); border-bottom-color: var(--yellow); }
+  .sw--sm { min-height: 2.2rem; font-size: 0.9rem; --lever: 0.45em; padding-block: 0.3em; margin-block: 0.4rem; }
+
+  @media (min-width: 62rem) {
+    .rail__in { flex-wrap: nowrap; }
+    .rail__nav { order: 2; flex: 0 1 auto; overflow: visible; margin-inline: 0; padding-inline: 0; border-top: 0; margin-inline-start: auto; margin-inline-end: 1.6rem; }
+    .rail__cta { order: 3; }
+    .rail__nav ul { gap: 1.6rem; }
+    .rail__nav a:not(.sw) { padding-block: 0.4rem; }
+  }
+</style>

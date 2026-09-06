@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Placard from '../../components/Placard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services } from '../../data/services';
+import { site, engagementSteps } from '../../data/site';
+
+const schema = [
+  { '@type': 'CollectionPage', '@id': `${site.url}/services/#page`, url: `${site.url}/services/`, name: 'Services', isPartOf: { '@id': `${site.url}/#website` } },
+  { '@type': 'ItemList', itemListElement: services.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title, url: `${site.url}${s.href}` })) },
+];
+---
+<Base title="Services" description="Four ways to engage: sovereign inference, fine-tuning and testing, AI and robotics consulting, and facility upgrades — plus zero-emission power hire." image="/og/services.png" schema={schema}>
+  <PageHeader title="Four ways to engage." lede="Everything here is delivered from our own facility by the people who built it. Scope is fixed in writing before any work starts, and the scoping fee is credited against delivery if you proceed." />
+
+  <div class="wrap wall wall--top">
+    {services.map((s, n) => (
+      <Placard tone={n < 2 ? 'yellow' : 'black'} as="article" i={1 + n} class="srv">
+        <div class="split">
+          <div>
+            <h2><a href={s.href}>{s.title}</a></h2>
+            <p class="lede" style="margin-block-start:0.9rem">{s.summary}</p>
+            <p class="tag" style="margin-block-start:1.25rem">{s.bought.replace(/^Bought as /, '')}<span>{s.leadTime}</span></p>
+          </div>
+          <div>
+            <ul class="list">{s.deliverables.slice(0, 5).map((d) => <li>{d}</li>)}</ul>
+            <p style="margin-block-start:1.5rem"><a class="sw" href={s.href}>{s.linkLabel}</a></p>
+          </div>
+        </div>
+      </Placard>
+    ))}
+
+    <Placard tone="yellow" as="article" i={5} class="srv">
+      <div class="split">
+        <div>
+          <h2><a href="/power/">Zero-emission power hire</a></h2>
+          <p class="lede" style="margin-block-start:0.9rem">250 kVA hydrogen fuel-cell generation, hired out for events, construction, mining and data-centre sites. No fumes, no engine noise, water as the only by-product.</p>
+          <p class="tag" style="margin-block-start:1.25rem">Dry or wet hire, by the day, week or project<span>Lead time subject to fleet availability</span></p>
+        </div>
+        <div>
+          <ul class="list">
+            <li>250 kVA per unit, 800 A output, AC and DC</li>
+            <li>Deployable in noise-restricted and indoor locations</li>
+            <li>Grid-tied or fully standalone operation</li>
+            <li>Replaces diesel sets without an exhaust or fuel-spill footprint</li>
+          </ul>
+          <p style="margin-block-start:1.5rem"><a class="sw" href="/power/">See the power sheet</a></p>
+        </div>
+      </div>
+    </Placard>
+
+    <Placard tone="black" i={6}>
+      <h2 class="h-mid">Every engagement runs the same way</h2>
+      <ol class="steps">
+        {engagementSteps.map((s) => (
+          <li><span class="steps__n" aria-hidden="true">{s.n}</span><h3>{s.title}</h3><p class="sub">{s.body}</p></li>
+        ))}
+      </ol>
+    </Placard>
+  </div>
+  <CtaBand />
+</Base>
+
+<style>
+  .wall--top { margin-block-start: clamp(0.9rem, 0.5rem + 1.6vw, 1.75rem); }
+  .srv h2 a { text-decoration: none; }
+  .srv h2 a:hover { text-decoration: underline; }
+  .h-mid { font-size: var(--t2); }
+  .steps { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 1.5rem; border-top: 2px solid var(--fg); }
+  @media (min-width: 52rem) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; } }
+  .steps li { padding-block-start: 1rem; }
+  .steps__n { display: block; font-family: var(--display); font-weight: 800; font-size: var(--t4); line-height: 0.85; }
+  .steps h3 { margin-block: 0.5rem; font-size: var(--t1); }
+</style>

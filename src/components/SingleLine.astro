@@ -1,0 +1,79 @@
+---
+/**
+ * Single-line diagram of the facility, drawn as it would be stencilled on a
+ * switchboard placard: heavy black lines on yellow. Same geometry as a real
+ * one-line: generation and storage above the bus, loads below.
+ */
+const gen = [
+  { x: 40, label: 'Renewable generation', sub: 'Self-generated' },
+  { x: 400, label: 'Energy storage', sub: 'Resilient' },
+  { x: 760, label: 'Backup generation', sub: 'Zero-emission' },
+];
+const load = [
+  { x: 40, label: 'Inference cluster', sub: 'Dedicated, never shared' },
+  { x: 310, label: 'Robotics cell', sub: 'Proven in-house' },
+  { x: 580, label: 'Fabrication', sub: 'Prototype to production' },
+  { x: 850, label: 'Edge compute', sub: 'Inference in the field' },
+];
+const TW = 320, BW = 240, H = 58, BUS = 172;
+---
+<figure class="sld">
+  <div class="sld__scroll">
+    <svg viewBox="0 0 1120 410" width="1120" height="410" role="img" aria-labelledby="sld-t sld-d" class="sld__svg">
+      <title id="sld-t">Single-line diagram of the facility</title>
+      <desc id="sld-d">On-site renewable generation, energy storage and zero-emission backup feed one main switchboard. The switchboard supplies a dedicated inference cluster, a robotics cell, fabrication, and edge compute. Client systems connect to the inference cluster over an encrypted link and are answered on Australian soil.</desc>
+
+      {gen.map((g) => (
+        <>
+          <rect x={g.x} y="36" width={TW} height={H} class="bx" />
+          <text x={g.x + 16} y="60" class="lab">{g.label}</text>
+          <text x={g.x + 16} y="80" class="sb">{g.sub}</text>
+          <path d={`M${g.x + TW / 2} ${36 + H} V ${BUS}`} class="w" />
+        </>
+      ))}
+
+      <rect x="24" y={BUS - 6} width="1072" height="12" class="bus" />
+      <text x="24" y={BUS - 14} class="an">Main switchboard</text>
+      {gen.map((g) => <circle cx={g.x + TW / 2} cy={BUS} r="8" class="nd" />)}
+
+      {load.map((l) => (
+        <>
+          <path d={`M${l.x + BW / 2} ${BUS} V 244`} class="w" />
+          <rect x={l.x} y="244" width={BW} height={H} class="bx" />
+          <text x={l.x + 14} y="268" class="lab">{l.label}</text>
+          <text x={l.x + 14} y="288" class="sb">{l.sub}</text>
+        </>
+      ))}
+
+      <path d={`M160 ${244 + H} V 334`} class="wd" />
+      <rect x="40" y="334" width={BW + 60} height={H} class="bx bx--k" />
+      <text x="54" y="358" class="lab lab--k">Client systems</text>
+      <text x="54" y="378" class="sb sb--k">Encrypted link · answered on Australian soil</text>
+
+      <g transform="translate(700, 352)">
+        <path d="M0 0 H 44" class="w" /><text x="54" y="5" class="sb">Power</text>
+        <path d="M130 0 H 174" class="wd" /><text x="184" y="5" class="sb">Data</text>
+        <circle cx="290" cy="0" r="8" class="nd" /><text x="306" y="5" class="sb">Energised</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption class="sld__cap">Single-line diagram of the facility. Generation and storage above the switchboard, loads below. Not to scale.</figcaption>
+</figure>
+
+<style>
+  .sld { margin: 0; }
+  .sld__scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+  .sld__svg { min-width: 760px; width: 100%; height: auto; }
+  .bx { fill: var(--bg); stroke: var(--fg); stroke-width: 3; }
+  .bx--k { fill: var(--fg); }
+  .bus { fill: var(--fg); }
+  .w { stroke: var(--fg); stroke-width: 3; fill: none; }
+  .wd { stroke: var(--fg); stroke-width: 3; stroke-dasharray: 8 6; fill: none; }
+  .nd { fill: var(--bg); stroke: var(--fg); stroke-width: 3; }
+  .lab { font-family: var(--display); font-weight: 800; font-size: 19px; text-transform: uppercase; letter-spacing: 0.02em; fill: var(--fg); }
+  .lab--k { fill: var(--bg); }
+  .sb { font-family: var(--body); font-weight: 500; font-size: 12.5px; fill: var(--fg2); }
+  .sb--k { fill: var(--bg); }
+  .an { font-family: var(--display); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; fill: var(--fg); }
+  .sld__cap { margin-block-start: 0.75rem; font-size: var(--t-1); color: var(--fg2); }
+</style>

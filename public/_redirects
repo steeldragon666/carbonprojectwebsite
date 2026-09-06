@@ -1,0 +1,7 @@
+# Legacy anchors from the previous single-page site.
+/index.html            /                       301
+/technology            /services/              301
+/generators            /power/                 301
+/approach              /how-we-work/           301
+/impact                /research/              301
+/services/facility-upgrading  /services/facility-upgrade/  301

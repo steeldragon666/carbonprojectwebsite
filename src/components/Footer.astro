@@ -1,0 +1,61 @@
+---
+import { site, nav, offers } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="foot">
+  <div class="wrap">
+    <div class="rating" role="group" aria-label="Entity details">
+      <div><span class="rating__k">Entity</span><span class="rating__v">{site.legalName}</span></div>
+      <div><span class="rating__k">Established</span><span class="rating__v tab">{site.founded}</span></div>
+      <div><span class="rating__k">Location</span><span class="rating__v">{site.location.region}, {site.location.state}</span></div>
+      <div><span class="rating__k">Enquiries</span><span class="rating__v"><a href={`mailto:${site.email}`}>{site.email}</a></span></div>
+      <div><span class="rating__k">Response</span><span class="rating__v">One business day</span></div>
+    </div>
+
+    <div class="foot__cols">
+      <nav aria-label="Services"><h2>Services</h2><ul>
+        {offers.map((o) => <li><a href={o.href}>{o.title}</a></li>)}
+        <li><a href="/power/">Zero-emission power hire</a></li>
+      </ul></nav>
+      <nav aria-label="Company"><h2>Company</h2><ul>
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        <li><a href="/contact/">Contact</a></li>
+      </ul></nav>
+      <nav aria-label="Legal"><h2>Legal</h2><ul>
+        <li><a href="/legal/privacy/">Privacy notice</a></li>
+        <li><a href="/legal/terms/">Terms of use</a></li>
+      </ul></nav>
+      <div><h2>Imagery</h2><p class="small">Images on this site are generated and illustrative. None is a photograph of the company's facility, equipment or people.</p></div>
+    </div>
+
+    <p class="foot__base small">© {year} {site.legalName}. All rights reserved. <a href="#top">Back to top</a></p>
+  </div>
+</footer>
+
+<style>
+  .foot { margin-block-start: auto; padding-block: var(--band); border-top: 2px solid var(--steel); }
+  .rating {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    border: 2px solid var(--yellow);
+  }
+  @media (min-width: 48rem) { .rating { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 72rem) { .rating { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  .rating > div {
+    display: grid; gap: 0.25rem; padding: 0.85rem 1rem;
+    border-right: 2px solid var(--yellow); border-bottom: 2px solid var(--yellow);
+  }
+  .rating__k { font-family: var(--display); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--yellow); }
+  .rating__v { font-weight: 500; font-size: var(--t-1); line-height: 1.3; }
+  .rating__v a { color: var(--white); text-decoration-color: var(--yellow); }
+
+  .foot__cols { display: grid; gap: 2rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-block-start: 2.5rem; }
+  @media (min-width: 56rem) { .foot__cols { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .foot__cols h2 { font-size: var(--t1); margin-block-end: 0.75rem; color: var(--yellow); }
+  .foot__cols ul { list-style: none; margin: 0; padding: 0; }
+  .foot__cols li + li { margin-block-start: 0.45rem; }
+  .foot__cols a { color: var(--ink2-k); text-decoration: none; font-size: var(--t-1); }
+  .foot__cols a:hover { color: var(--white); text-decoration: underline; text-decoration-color: var(--yellow); }
+  .foot__cols p { color: var(--ink2-k); max-width: 32ch; }
+  .foot__base { margin-block-start: 2.5rem; padding-block-start: 1rem; border-top: 1px solid var(--steel); color: var(--ink2-k); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .foot__base a { color: var(--white); text-decoration-color: var(--yellow); }
+</style>
