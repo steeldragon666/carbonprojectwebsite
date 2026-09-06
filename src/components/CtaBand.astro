@@ -1,0 +1,41 @@
+---
+import { site } from '../data/site';
+interface Props { title?: string; body?: string; primary?: string; }
+const {
+  title = 'Tell us what you need.',
+  body = 'A short call and a written brief that says what we will do and what it costs. No obligation beyond that.',
+  primary = 'Book a scoping call',
+} = Astro.props;
+---
+<section class="cta-band">
+  <div class="wrap cta-band__in">
+    <div>
+      <h2>{title}</h2>
+      <p class="lede" style="margin-block-start:1rem">{body}</p>
+    </div>
+    <div class="cta-band__actions">
+      <a class="btn" href="/contact/">{primary}</a>
+      <a class="btn btn--ghost" href={`mailto:${site.email}`}>{site.email}</a>
+      <p class="anno" style="margin-block-start:0.5rem">{site.responseTime}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    border-block: 1px solid var(--rule);
+    background: var(--sheet-alt);
+    padding-block: clamp(2.5rem, 1.8rem + 3.2vw, 4.25rem);
+  }
+  .cta-band__in {
+    display: grid;
+    gap: 2rem;
+    align-items: end;
+  }
+  @media (min-width: 56rem) {
+    .cta-band__in { grid-template-columns: minmax(0, 1fr) auto; gap: 3rem; }
+  }
+  .cta-band h2 { font-size: var(--step-3); max-width: 16ch; }
+  .cta-band__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+  .cta-band__actions .anno { flex: 1 0 100%; }
+</style>

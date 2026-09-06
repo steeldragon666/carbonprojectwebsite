@@ -1,0 +1,89 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Section from '../../components/Section.astro';
+import { site } from '../../data/site';
+const updated = '2026-09-06';
+---
+<Base
+  title="Terms of use"
+  description="Terms governing use of the carbonproject.ai website."
+>
+  <PageHeader
+    eyebrow="Legal"
+    title="Terms of use"
+    lede={`Terms governing your use of this website. Last updated ${updated}.`}
+    crumbs={[]}
+  />
+
+  <Section rule={false}>
+    <div class="flow legal">
+      <h2>Who we are</h2>
+      <p class="muted">
+        This site is published by {site.legalName}, an Australian company established in
+        {' '}{site.founded}, operating from {site.location.region}, {site.location.stateName}.
+      </p>
+
+      <h2>This site is information, not an offer</h2>
+      <p>
+        Descriptions of services, capability and specifications on this site are general information.
+        They are not an offer capable of acceptance, and they do not form part of any contract. Any
+        engagement with us is governed by a written scope and agreement signed by both parties, and
+        where that document differs from this site, that document governs.
+      </p>
+
+      <h2>Specifications and availability</h2>
+      <p>
+        Equipment specifications quoted on this site are nominal and describe the class of equipment
+        we operate. Actual specification, availability, lead time and price for any particular
+        engagement or hire are confirmed in writing at quoting. Capacity is finite and is allocated
+        under agreement.
+      </p>
+
+      <h2>Nothing here is professional advice</h2>
+      <p>
+        Content on this site is not engineering, legal, financial or safety advice for your specific
+        situation, and should not be relied on as a substitute for an assessment of your site, your
+        data or your obligations.
+      </p>
+
+      <h2>Australian Consumer Law</h2>
+      <p>
+        Nothing in these terms excludes, restricts or modifies any guarantee, right or remedy you
+        have under the <em>Competition and Consumer Act 2010</em> (Cth), including the Australian
+        Consumer Law, where it cannot lawfully be excluded.
+      </p>
+
+      <h2>Intellectual property</h2>
+      <p>
+        The content, drawings, diagrams and design of this site are our property or used with
+        permission. You may read, print and share pages for your own business evaluation. You may not
+        reproduce the site or substantial parts of it for commercial publication without our written
+        permission.
+      </p>
+
+      <h2>External links</h2>
+      <p>
+        Where we link to another organisation we do so for reference. We do not control those sites
+        and are not responsible for their content.
+      </p>
+
+      <h2>Governing law</h2>
+      <p>
+        These terms are governed by the laws of Victoria, Australia, and you submit to the
+        non-exclusive jurisdiction of the courts of that state.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about these terms: <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+    </div>
+  </Section>
+</Base>
+
+<style>
+  .legal { max-width: var(--measure); }
+  .legal h2 { font-size: var(--step-1); }
+  .legal a { color: var(--action); }
+</style>

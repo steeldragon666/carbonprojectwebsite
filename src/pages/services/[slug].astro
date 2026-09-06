@@ -1,0 +1,180 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Section from '../../components/Section.astro';
+import Faq from '../../components/Faq.astro';
+import EnquiryForm from '../../components/EnquiryForm.astro';
+import { services, type ServiceDetail } from '../../data/services';
+import { site, enquiryTopics } from '../../data/site';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+
+interface Props { service: ServiceDetail }
+const { service } = Astro.props;
+
+const topicMap: Record<string, (typeof enquiryTopics)[number]> = {
+  'sovereign-inference': 'Sovereign inference capacity',
+  'fine-tuning': 'Fine-tuning or model testing',
+  'ai-robotics-consulting': 'AI and robotics consulting',
+  'facility-upgrade': 'Facility audit and upgrade',
+};
+
+const others = services.filter((s) => s.slug !== service.slug);
+
+const schema = [
+  {
+    '@type': 'Service',
+    '@id': `${site.url}${service.href}#service`,
+    name: service.title,
+    description: service.summary,
+    url: `${site.url}${service.href}`,
+    serviceType: service.metaTitle,
+    provider: { '@id': `${site.url}/#organisation` },
+    areaServed: { '@type': 'Country', name: 'Australia' },
+  },
+  {
+    '@type': 'FAQPage',
+    '@id': `${site.url}${service.href}#faq`,
+    mainEntity: service.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: `${site.url}/services/` },
+      { '@type': 'ListItem', position: 3, name: service.title, item: `${site.url}${service.href}` },
+    ],
+  },
+];
+---
+<Base
+  title={service.metaTitle}
+  description={service.metaDescription}
+  image={`/og/${service.slug}.png`}
+  schema={schema}>
+  <PageHeader
+    eyebrow={`${service.no} — Service`}
+    title={service.title}
+    lede={service.lede}
+    crumbs={[{ label: 'Services', href: '/services/' }]}
+  />
+
+  <Section no="A" label="What you get" rule={false}>
+    <div class="split split--wide">
+      <div class="split__aside">
+        <h2>What you get</h2>
+        <p class="anno" style="margin-block-start:1rem">{service.bought}</p>
+        <p class="muted small" style="margin-block-start:1rem">{service.leadTime}</p>
+      </div>
+      <ul class="ticks ticks--lg">
+        {service.deliverables.map((d) => <li>{d}</li>)}
+      </ul>
+    </div>
+  </Section>
+
+  {service.sections.map((s) => (
+    <Section>
+      <div class="split split--wide">
+        <div class="split__aside"><h2 class="sub">{s.heading}</h2></div>
+        <div class="flow">
+          {s.body && <p class="muted">{s.body}</p>}
+          {s.list && (
+            <ul class="ticks" style="margin-block-start:1rem">
+              {s.list.map((li) => <li>{li}</li>)}
+            </ul>
+          )}
+        </div>
+      </div>
+    </Section>
+  ))}
+
+  <Section no="B" label="Commercial structure" alt={true}>
+    <div class="split split--wide">
+      <div class="split__aside">
+        <h2 class="sub">How the money works</h2>
+        <p class="muted small" style="margin-block-start:1rem">
+          Every price is quoted in writing before work starts. We do not publish rate cards because
+          the honest number depends on scope — but you will never be asked to approve a range.
+        </p>
+      </div>
+      <dl class="rows">
+        {service.commercial.map((c) => (<div><dt>{c.k}</dt><dd>{c.v}</dd></div>))}
+      </dl>
+    </div>
+  </Section>
+
+  <Section>
+    <div class="split split--wide">
+      <div class="split__aside"><h2 class="sub">What we need from you</h2></div>
+      <div>
+        <ul class="ticks">{service.inputs.map((i) => <li>{i}</li>)}</ul>
+        <div class="notfor">
+          <p class="anno">What this is not</p>
+          <p class="muted small" style="margin-block-start:0.5rem">{service.notFor}</p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section no="C" label="Questions" alt={true}>
+    <div class="split split--wide">
+      <div class="split__aside"><h2 class="sub">Questions we get asked</h2></div>
+      <Faq items={service.faq} />
+    </div>
+  </Section>
+
+  <Section no="D" label="Enquiries">
+    <div class="split split--wide">
+      <div class="split__aside">
+        <h2 class="sub">Start with a scoping call</h2>
+        <p class="muted small" style="margin-block-start:1rem">
+          Fixed fee, credited against delivery. You leave with a written brief whether or not you
+          engage us further.
+        </p>
+        <p class="small" style="margin-block-start:1rem">
+          Or email <a class="tlink" href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+      </div>
+      <EnquiryForm id={`enq-${service.slug}`} topic={topicMap[service.slug]} />
+    </div>
+  </Section>
+
+  <Section no="E" label="Also from us" alt={true}>
+    <h2 class="sub">Also from us</h2>
+    <div class="grid-sheet grid-3 related">
+      {others.map((o) => (
+        <article>
+          <p class="anno">{o.no}</p>
+          <h3><a href={o.href}>{o.title}</a></h3>
+          <p class="small muted">{o.summary}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+</Base>
+
+<style>
+  .sub { font-size: var(--step-2); }
+  .ticks--lg li { font-size: var(--step-0); }
+  .rows a { color: var(--action); }
+
+  .notfor {
+    margin-block-start: 2rem;
+    padding: 1.15rem 1.25rem;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--signal);
+    border-radius: var(--radius);
+    background: var(--sheet);
+  }
+
+  .related { margin-block-start: 1.75rem; }
+  .related h3 { margin-block: 0.6rem 0.5rem; }
+  .related h3 a { text-decoration: none; }
+  .related h3 a:hover { text-decoration: underline; text-decoration-color: var(--signal); }
+</style>

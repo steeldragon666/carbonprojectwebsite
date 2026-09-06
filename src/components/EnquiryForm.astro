@@ -1,0 +1,179 @@
+---
+import { site, enquiryTopics } from '../data/site';
+
+interface Props {
+  /** Preselects the "What you need" option, e.g. from a service page. */
+  topic?: (typeof enquiryTopics)[number];
+  id?: string;
+}
+const { topic, id = 'enquiry' } = Astro.props;
+
+/**
+ * The form posts to PUBLIC_FORM_ENDPOINT (Formspree, Web3Forms, a Cloudflare
+ * Pages Function — anything that accepts a URL-encoded POST). When it is not
+ * configured the form degrades to a pre-filled mailto: so an enquiry is never
+ * silently lost, which is what the previous site did.
+ */
+const endpoint = site.formEndpoint;
+const usingMailto = !endpoint;
+---
+<form
+  class="ef"
+  id={id}
+  method="post"
+  action={endpoint || undefined}
+  data-mailto={usingMailto ? site.email : undefined}>
+  {!usingMailto && (
+    <>
+      <input type="hidden" name="_subject" value="Website enquiry — carbonproject.ai" />
+      <input type="hidden" name="_next" value={`${site.url}/contact/received/`} />
+    </>
+  )}
+  {/* Honeypot: bots fill it, people never see it. */}
+  <div class="ef__hp" aria-hidden="true">
+    <label for={`${id}-company-url`}>Leave this field empty</label>
+    <input id={`${id}-company-url`} name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="ef__grid">
+    <p class="ef__field">
+      <label for={`${id}-name`}>Name <span class="ef__req" aria-hidden="true">*</span></label>
+      <input id={`${id}-name`} name="name" type="text" autocomplete="name" required />
+    </p>
+    <p class="ef__field">
+      <label for={`${id}-email`}>Work email <span class="ef__req" aria-hidden="true">*</span></label>
+      <input
+        id={`${id}-email`}
+        name="email"
+        type="email"
+        autocomplete="email"
+        inputmode="email"
+        spellcheck="false"
+        required
+      />
+    </p>
+    <p class="ef__field">
+      <label for={`${id}-org`}>Organisation</label>
+      <input id={`${id}-org`} name="organisation" type="text" autocomplete="organization" />
+    </p>
+    <p class="ef__field">
+      <label for={`${id}-topic`}>What you need</label>
+      <select id={`${id}-topic`} name="topic">
+        {!topic && <option value="">Choose one</option>}
+        {enquiryTopics.map((t) => (
+          <option value={t} selected={topic === t}>{t}</option>
+        ))}
+      </select>
+    </p>
+    <p class="ef__field ef__field--full">
+      <label for={`${id}-brief`}>Brief <span class="ef__req" aria-hidden="true">*</span></label>
+      <textarea
+        id={`${id}-brief`}
+        name="brief"
+        rows="5"
+        required
+        aria-describedby={`${id}-brief-help`}></textarea>
+      <span class="ef__help small muted" id={`${id}-brief-help`}>
+        What you are trying to do, what data or hardware is involved, and any deadline.
+      </span>
+    </p>
+  </div>
+
+  <div class="ef__foot">
+    <button class="btn" type="submit">Send enquiry</button>
+    <p class="small muted ef__note">
+      {site.responseTime} We use what you send only to answer your enquiry — see our
+      <a href="/legal/privacy/">privacy notice</a>. Prefer email?
+      <a href={`mailto:${site.email}`}>{site.email}</a>.
+    </p>
+  </div>
+</form>
+
+{usingMailto && (
+  <script is:inline>
+    /*
+     * No form endpoint is configured for this build, so the form hands the
+     * enquiry to the visitor's mail client rather than posting it into a void —
+     * which is what the previous site did. Set PUBLIC_FORM_ENDPOINT to post to a
+     * real handler instead; see README.
+     */
+    document.querySelectorAll('form.ef[data-mailto]').forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.reportValidity()) return;
+        event.preventDefault();
+        var get = function (n) {
+          var el = form.elements.namedItem(n);
+          return el && el.value ? String(el.value).trim() : '';
+        };
+        if (get('_gotcha')) return;
+        var body = [
+          'Name: ' + get('name'),
+          'Email: ' + get('email'),
+          'Organisation: ' + (get('organisation') || '—'),
+          'What you need: ' + (get('topic') || '—'),
+          '',
+          get('brief'),
+        ].join('\n');
+        var subject = 'Website enquiry' + (get('topic') ? ' — ' + get('topic') : '');
+        window.location.href =
+          'mailto:' + form.dataset.mailto +
+          '?subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body);
+      });
+    });
+  </script>
+)}
+
+<style>
+  .ef__hp {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0);
+    white-space: nowrap; border: 0;
+  }
+  .ef__grid {
+    display: grid;
+    gap: 1.15rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 40rem) { .ef__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .ef__field { margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+  .ef__field--full { grid-column: 1 / -1; }
+  .ef label {
+    font-family: var(--mono);
+    font-size: var(--step--2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .ef__req { color: var(--action); }
+  .ef input,
+  .ef select,
+  .ef textarea {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    background: var(--sheet);
+    border: 1px solid var(--field);
+    border-radius: var(--radius);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    transition: border-color 120ms ease;
+  }
+  .ef textarea { resize: vertical; min-height: 7.5rem; }
+  .ef input:hover, .ef select:hover, .ef textarea:hover { border-color: var(--ink-3); }
+  .ef input:focus-visible, .ef select:focus-visible, .ef textarea:focus-visible {
+    border-color: var(--action);
+  }
+  .ef input:user-invalid, .ef textarea:user-invalid { border-color: #c0392b; }
+  .ef__help { line-height: 1.45; }
+  .ef__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-block-start: 1.5rem;
+  }
+  .ef__note { flex: 1 1 22ch; max-width: 52ch; }
+  .ef__note a { color: var(--action); }
+</style>

@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Section from '../../components/Section.astro';
+import { site } from '../../data/site';
+const updated = '2026-09-06';
+---
+<Base
+  title="Privacy notice"
+  description="How Carbon Project Australia collects, uses and stores personal information submitted through carbonproject.ai."
+>
+  <PageHeader
+    eyebrow="Legal"
+    title="Privacy notice"
+    lede={`How we handle information you send us through this site. Last updated ${updated}.`}
+    crumbs={[]}
+  />
+
+  <Section rule={false}>
+    <div class="flow legal">
+      <p class="muted">
+        {site.legalName} (“we”, “us”) is an Australian company. This notice explains what we do with
+        personal information collected through <strong>carbonproject.ai</strong>. We handle personal
+        information in accordance with the <em>Privacy Act 1988</em> (Cth) and the Australian Privacy
+        Principles.
+      </p>
+
+      <h2>What we collect</h2>
+      <p>We collect only what you choose to send us:</p>
+      <ul>
+        <li>Your name, work email address and organisation, if you enter them in the enquiry form.</li>
+        <li>The content of your enquiry, including anything you choose to describe in the brief field.</li>
+        <li>Any information you send us by email.</li>
+      </ul>
+      <p>
+        We do not run advertising trackers, we do not set marketing cookies, and we do not sell,
+        rent or share your information with data brokers.
+      </p>
+
+      <h2>Why we collect it</h2>
+      <p>
+        To answer your enquiry, to prepare a scope or quote if you ask for one, and to keep a record
+        of our dealings with you. If we later want to send you anything that is not a reply to your
+        enquiry, we will ask first, and every such message will carry a working unsubscribe.
+      </p>
+
+      <h2>Where it goes</h2>
+      <p>
+        Enquiries submitted through the form are delivered to our email and, where a form-handling
+        service is used, pass through that service in transit. Correspondence is stored in our
+        business systems. We use reputable providers and we do not transfer personal information
+        overseas for the purpose of processing your enquiry beyond what those mail and form services
+        require to deliver it.
+      </p>
+      <p>
+        Client data handled under a services agreement is a separate matter. Where we run inference,
+        fine-tuning or facility work for you, the handling of that data is governed by the written
+        data-handling schedule attached to that agreement, which names the site, the retention period
+        and the access list. This notice does not override it.
+      </p>
+
+      <h2>How long we keep it</h2>
+      <p>
+        Enquiries are kept while there is a live commercial conversation and for as long as we
+        reasonably need them afterwards for business records. You can ask us to delete an enquiry at
+        any time and we will, unless we are required to keep it.
+      </p>
+
+      <h2>Analytics and cookies</h2>
+      <p>
+        This site does not set cookies and does not load third-party analytics or advertising
+        scripts. Our host keeps standard server request logs for security and operational purposes.
+      </p>
+
+      <h2>Security</h2>
+      <p>
+        We take reasonable steps to protect personal information from misuse, loss and unauthorised
+        access. No transmission over the internet is completely secure, so please do not send
+        classified, clearance-controlled or highly sensitive material through the enquiry form — ask
+        us for an appropriate channel instead.
+      </p>
+
+      <h2>Access, correction and complaints</h2>
+      <p>
+        You may ask us what personal information we hold about you, ask us to correct it, or complain
+        about how we have handled it. Email <a href={`mailto:${site.email}`}>{site.email}</a> and we
+        will respond within a reasonable period, ordinarily within 30 days.
+      </p>
+      <p>
+        If you are not satisfied with our response you can complain to the Office of the Australian
+        Information Commissioner at
+        <a href="https://www.oaic.gov.au" rel="noopener">oaic.gov.au</a>.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        We will update this page if our practices change, and the date at the top will change with
+        it.
+      </p>
+    </div>
+  </Section>
+</Base>
+
+<style>
+  .legal { max-width: var(--measure); }
+  .legal h2 { font-size: var(--step-1); }
+  .legal a { color: var(--action); }
+  .legal strong { font-weight: 600; }
+</style>

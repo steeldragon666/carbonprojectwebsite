@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import SingleLine from '../components/SingleLine.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import { site, facilitySpec } from '../data/site';
+
+const faq = [
+  {
+    q: 'Can we visit?',
+    a: 'Yes, by appointment. It is about an hour from Melbourne. Most clients who are serious about jurisdiction come and stand in the room, and we would rather you did.',
+  },
+  {
+    q: 'Who has physical access to the hardware?',
+    a: 'A named list, provided in writing as part of any inference agreement, along with what would have to happen for that list to change.',
+  },
+  {
+    q: 'What happens when the grid goes down?',
+    a: 'On-site generation and storage carry the load, with zero-emission backup behind that. The design intent is that a grid outage is not an event our clients hear about.',
+  },
+  {
+    q: 'Can you run our hardware rather than yours?',
+    a: 'Colocation of client-owned hardware is possible and is scoped case by case. It changes the commercial and the liability shape, so it is a conversation rather than a product.',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'Place',
+    '@id': `${site.url}/facility/#place`,
+    name: 'Carbon Project Australia research and fabrication facility',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: site.location.region,
+      addressRegion: site.location.stateName,
+      addressCountry: site.location.countryCode,
+    },
+  },
+  {
+    '@type': 'FAQPage',
+    '@id': `${site.url}/facility/#faq`,
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+<Base
+  title="The facility"
+  image="/og/facility.png"
+  description="A self-powered research and fabrication facility on the Mornington Peninsula, Victoria: GPU compute, on-site generation, robotics and fabrication."
+  schema={schema}>
+  <PageHeader
+    eyebrow="03 — The facility"
+    title="We future-proofed our own site first."
+    lede="Everything we sell runs here before it is offered to anyone. Compute, power, robotics and fabrication under one roof on the Mornington Peninsula, about an hour from Melbourne."
+  />
+
+  <Section rule={false}>
+    <SingleLine />
+  </Section>
+
+  <Section no="A" label="What is on site" alt={true}>
+    <div class="split split--wide">
+      <div class="split__aside">
+        <h2 class="sub">What is on site</h2>
+        <p class="muted small" style="margin-block-start:1rem">
+          Owned and operated by Carbon Project Australia. No sub-let racks, no third-party control
+          plane, no capacity quietly resold when demand spikes.
+        </p>
+      </div>
+      <dl class="rows">
+        {facilitySpec.map((r) => (<div><dt>{r.k}</dt><dd>{r.v}</dd></div>))}
+      </dl>
+    </div>
+  </Section>
+
+  <Section no="B" label="Why it matters">
+    <div class="split split--wide">
+      <div class="split__aside"><h2 class="sub">Why a single site matters</h2></div>
+      <div class="flow">
+        <p class="muted">
+          Sovereignty is not a marketing word here, it is a property of a building. A model served
+          from hardware we own, in a building we control, on a network we designed, has a
+          jurisdiction you can point at. A model served from an abstraction does not.
+        </p>
+        <p class="muted">
+          Putting compute, power, robotics and fabrication on the same site also collapses the loop
+          between a design decision and a physical result. When a robotics client needs a bracket
+          changed, it is changed and tested the same week, on the same floor, by the people who
+          specified it.
+        </p>
+        <p class="muted">
+          The energy side is the part most people underestimate. Generation, storage and
+          zero-emission backup are what make the compute claim credible: an inference node that goes
+          dark with the grid is not sovereign, it is just local.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section no="C" label="Questions" alt={true}>
+    <div class="split split--wide">
+      <div class="split__aside"><h2 class="sub">Questions we get asked</h2></div>
+      <Faq items={faq} />
+    </div>
+  </Section>
+
+  <CtaBand
+    title="Come and stand in the room."
+    body="Visits are by appointment, about an hour from Melbourne. Bring the person who has to sign the risk assessment."
+    primary="Arrange a visit"
+  />
+</Base>
+
+<style>
+  .sub { font-size: var(--step-2); }
+  .rows a { color: var(--action); }
+</style>

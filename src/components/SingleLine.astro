@@ -1,0 +1,148 @@
+---
+/**
+ * Indicative single-line diagram of the facility.
+ * Generation and storage feed a common bus; compute, robotics and fabrication
+ * hang off it. Drawn to read as an electrical schematic, not a marketing graphic.
+ */
+const gen = [
+  { x: 40, label: 'Renewable generation', sub: 'Self-generated' },
+  { x: 400, label: 'Energy storage', sub: 'Resilient' },
+  { x: 760, label: 'Backup generation', sub: 'Zero-emission' },
+];
+const load = [
+  { x: 40, label: 'Inference cluster', sub: 'Dedicated · never shared' },
+  { x: 310, label: 'Robotics cell', sub: 'Australian, proven in-house' },
+  { x: 580, label: 'Fabrication', sub: 'Prototype to production' },
+  { x: 850, label: 'Edge compute', sub: 'Inference in the field' },
+];
+const BOX_W_TOP = 320;
+const BOX_W_BOT = 240;
+const BOX_H = 54;
+const BUS_Y = 168;
+---
+<figure class="sld">
+  <div class="sld__scroll">
+    <svg
+      viewBox="0 0 1120 400"
+      width="1120"
+      height="400"
+      role="img"
+      aria-labelledby="sld-title sld-desc"
+      class="sld__svg">
+      <title id="sld-title">Single-line diagram of the Carbon Project Australia facility</title>
+      <desc id="sld-desc">
+        On-site renewable generation, energy storage and zero-emission backup generation feed a
+        common energised bus. The bus supplies a dedicated inference cluster, a robotics cell,
+        fabrication, and edge compute. Client systems connect to the inference cluster over an
+        encrypted link, and requests are answered on Australian soil.
+      </desc>
+
+      <!-- Generation and storage -->
+      {gen.map((g) => (
+        <>
+          <rect x={g.x} y={40} width={BOX_W_TOP} height={BOX_H} class="box" />
+          <text x={g.x + 16} y={62} class="t-lab">{g.label}</text>
+          <text x={g.x + 16} y={78} class="t-sub">{g.sub}</text>
+          <path d={`M${g.x + BOX_W_TOP / 2} ${40 + BOX_H} V ${BUS_Y}`} class="wire-power" />
+        </>
+      ))}
+
+      <!-- Energised bus -->
+      <rect x="24" y={BUS_Y - 4} width="1072" height="8" class="bus" />
+      <text x="24" y={BUS_Y - 10} class="t-anno">Main switchboard</text>
+      {gen.map((g) => (
+        <circle cx={g.x + BOX_W_TOP / 2} cy={BUS_Y} r="5.5" class="node" />
+      ))}
+
+      <!-- Loads -->
+      {load.map((l) => (
+        <>
+          <path d={`M${l.x + BOX_W_BOT / 2} ${BUS_Y} V 236`} class="wire-power" />
+          <rect x={l.x} y={236} width={BOX_W_BOT} height={BOX_H} class="box" />
+          <text x={l.x + 14} y={258} class="t-lab">{l.label}</text>
+          <text x={l.x + 14} y={274} class="t-sub">{l.sub}</text>
+        </>
+      ))}
+
+      <!-- Client link: data, not power -->
+      <path d={`M160 ${236 + BOX_H} V 324`} class="wire-data" />
+      <rect x="40" y="324" width={BOX_W_BOT} height={BOX_H} class="box" />
+      <text x="54" y="346" class="t-lab">Client systems</text>
+      <text x="54" y="362" class="t-sub">Encrypted link · answered on Australian soil</text>
+
+      <!-- Legend -->
+      <g transform="translate(636, 330)">
+        <path d="M0 0 H 44" class="wire-power" />
+        <text x="54" y="4" class="t-sub">Power</text>
+        <path d="M136 0 H 180" class="wire-data" />
+        <text x="190" y="4" class="t-sub">Data</text>
+        <circle cx="290" cy="0" r="5" class="node" />
+        <text x="304" y="4" class="t-sub">Energised</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption class="figcap">
+    Figure 1 — Indicative single-line diagram of the facility. Generation and storage on the left of
+    the switchboard; compute, robotics and fabrication hang off it. Not to scale.
+  </figcaption>
+</figure>
+
+<style>
+  .sld {
+    margin: 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--sheet);
+    padding: clamp(0.85rem, 0.5rem + 1.4vw, 1.5rem);
+  }
+  .sld__scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+  .sld__svg {
+    min-width: 720px;
+    width: 100%;
+    height: auto;
+  }
+
+  .box {
+    fill: var(--sheet);
+    stroke: var(--rule-strong);
+    stroke-width: 1.25;
+    rx: 2;
+  }
+  .bus {
+    fill: var(--signal);
+    stroke: var(--ink);
+    stroke-width: 1.25;
+  }
+  .wire-power { stroke: var(--ink-3); stroke-width: 1.25; fill: none; }
+  .wire-data {
+    stroke: var(--action);
+    stroke-width: 1.25;
+    stroke-dasharray: 5 4;
+    fill: none;
+  }
+  .node { fill: var(--signal); stroke: var(--ink); stroke-width: 1.25; }
+
+  .t-lab {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    fill: var(--ink);
+  }
+  .t-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    fill: var(--ink-3);
+  }
+  .t-anno {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    fill: var(--ink-3);
+  }
+</style>
