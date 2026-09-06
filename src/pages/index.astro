@@ -129,7 +129,7 @@ const schema = [
         <h2>We future-proofed our own site first.</h2>
         <p class="lede">Everything we sell runs here before it is offered to anyone.</p>
       </div>
-      <Plate src={peninsula} alt="Coastal scrub on a low ridge at blue hour with a single dark shed and one lit window" ratio="21 / 9" sizes="100vw" class="fac__plate" />
+      <Plate src={peninsula} alt="Coastal scrub on a low ridge at blue hour with a single dark shed and one lit window" ratio="21 / 9" sizes="100vw" class="mt" />
       <div class="split fac__body">
         <dl class="plate">
           {facilitySpec.slice(0, 3).map((r) => (<div><dt>{r.k}</dt><dd>{r.v}</dd></div>))}
@@ -150,7 +150,7 @@ const schema = [
             Carbon Project Australia is the R&amp;D performing entity and research conveyor for its
             partner companies. Each domain has working hardware behind it.
           </p>
-          <Plate src={robot} alt="A six-axis robot arm in silhouette against a single warm work light in a dark workshop" ratio="16 / 10" class="res__plate" />
+          <Plate src={robot} alt="A six-axis robot arm in silhouette against a single warm work light in a dark workshop" ratio="16 / 10" class="mt" />
         </div>
         <dl class="plate">
           {domains.map((d) => (
@@ -190,7 +190,7 @@ const schema = [
             <div><dt>Site</dt><dd>{site.location.region}, {site.location.stateName}. {site.location.note}</dd></div>
             <div><dt>Response</dt><dd>{site.responseTime}</dd></div>
           </dl>
-          <Plate src={hall} alt="Rows of dark server racks receding into shadow, one warm light along an edge" ratio="21 / 9" class="con__plate" />
+          <Plate src={hall} alt="Rows of dark server racks receding into shadow, one warm light along an edge" ratio="21 / 9" class="mt" />
         </div>
         <EnquiryForm id="home-enquiry" />
       </div>
@@ -239,8 +239,6 @@ const schema = [
   @media (min-width: 60rem) { .fac__head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; } }
   .fac__body { margin-block-start: 1.5rem; }
   @media (min-width: 60rem) { .fac__body { grid-template-columns: 1fr 1fr; } }
-  .res__plate { margin-block-start: 1.5rem; }
-  .con__plate { margin-block-start: 1.5rem; }
 
   .badge { display: inline-block; margin-inline-start: 0.6rem; padding: 0.15rem 0.5rem; border: 2px solid var(--fg); color: var(--fg); font-family: var(--display); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; vertical-align: middle; }
 

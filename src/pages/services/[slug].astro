@@ -52,7 +52,7 @@ const schema = [
       <div class="split">
         <div>
           <h2>What you get</h2>
-          <Plate src={plate.src} alt={plate.alt} ratio="4 / 3" class="sv__plate" />
+          <Plate src={plate.src} alt={plate.alt} ratio="4 / 3" class="mt-lg" />
         </div>
         <ul class="list list--lg">{service.deliverables.map((d) => <li>{d}</li>)}</ul>
       </div>
@@ -128,7 +128,6 @@ const schema = [
 <style>
   .wall--top { margin-block-start: clamp(0.9rem, 0.5rem + 1.6vw, 1.75rem); padding-block-end: var(--band); }
   .h-mid { font-size: var(--t2); }
-  .sv__plate { margin-block-start: 1.75rem; }
   .list--lg li { font-size: var(--t1); }
   .notfor { margin-block-start: 2rem; padding: 1.25rem; border: 2px solid var(--fg); }
   .notfor h3 { font-size: var(--t1); margin-block-end: 0.5rem; }
