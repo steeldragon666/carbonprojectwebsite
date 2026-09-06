@@ -14,9 +14,9 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
         {nav.map((n) => (
           <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
         ))}
-        <li class="rail__cta"><a href={cta.href} class="sw sw--sm">{cta.label}</a></li>
       </ul>
     </nav>
+    <a href={cta.href} class="sw sw--sm rail__cta">{cta.label}</a>
   </div>
 </header>
 
@@ -46,7 +46,9 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   }
   @media (max-width: 26rem) { .asset__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
 
+  .rail__cta { order: 2; }
   .rail__nav {
+    order: 3;
     flex: 1 0 100%;
     overflow-x: auto; scrollbar-width: none;
     margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter);
@@ -61,11 +63,12 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   }
   .rail__nav a:not(.sw):hover { color: var(--white); }
   .rail__nav a[aria-current='page'] { color: var(--white); border-bottom-color: var(--yellow); }
-  .sw--sm { min-height: 2.2rem; font-size: 0.95rem; padding: 0.35em 0.9em 0.35em 0.7em; margin-block: 0.4rem; }
+  .sw--sm { min-height: 2.2rem; font-size: 0.9rem; --lever: 0.45em; padding-block: 0.3em; margin-block: 0.4rem; }
 
   @media (min-width: 62rem) {
     .rail__in { flex-wrap: nowrap; }
-    .rail__nav { flex: 0 1 auto; overflow: visible; margin-inline: 0; padding-inline: 0; border-top: 0; }
+    .rail__nav { order: 2; flex: 0 1 auto; overflow: visible; margin-inline: 0; padding-inline: 0; border-top: 0; margin-inline-start: auto; margin-inline-end: 1.6rem; }
+    .rail__cta { order: 3; }
     .rail__nav ul { gap: 1.6rem; }
     .rail__nav a:not(.sw) { padding-block: 0.4rem; }
   }
