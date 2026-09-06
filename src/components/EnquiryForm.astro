@@ -73,7 +73,7 @@ const usingMailto = !endpoint;
         rows="5"
         required
         aria-describedby={`${id}-brief-help`}></textarea>
-      <span class="ef__help small muted" id={`${id}-brief-help`}>
+      <span class="ef__help small sub" id={`${id}-brief-help`}>
         What you are trying to do, what data or hardware is involved, and any deadline.
       </span>
     </p>
@@ -81,7 +81,7 @@ const usingMailto = !endpoint;
 
   <div class="ef__foot">
     <button class="sw" type="submit">Send enquiry</button>
-    <p class="small muted ef__note">
+    <p class="small sub ef__note">
       {site.responseTime} We use what you send only to answer your enquiry — see our
       <a href="/legal/privacy/">privacy notice</a>. Prefer email?
       <a href={`mailto:${site.email}`}>{site.email}</a>.
