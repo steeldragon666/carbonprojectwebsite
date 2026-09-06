@@ -1,10 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import Section from '../../components/Section.astro';
+import Placard from '../../components/Placard.astro';
+import Plate from '../../components/Plate.astro';
 import Faq from '../../components/Faq.astro';
 import EnquiryForm from '../../components/EnquiryForm.astro';
 import { site } from '../../data/site';
+import power from '../../assets/plates/power.png';
+import busbar from '../../assets/plates/busbar.png';
 
 const spec = [
   { k: 'Output', v: '250 kVA per unit, delivered as AC or DC through intelligent controllers.' },
@@ -15,145 +18,88 @@ const spec = [
   { k: 'Siting', v: 'No exhaust means indoor and enclosed installation is possible where a diesel set is not.' },
   { k: 'Fuel', v: 'Hydrogen, supplied and logistics-managed as part of a wet hire, or supplied by you.' },
 ];
-
 const uses = [
   { t: 'Events and festivals', b: 'Power a stage or a site in a noise-restricted or residential area without a curfew argument, and without a diesel bund in the middle of a public space.' },
-  { t: 'Construction', b: 'Site power where exhaust, fuel storage or noise conditions constrain a diesel set — including works inside occupied buildings.' },
+  { t: 'Construction', b: 'Site power where exhaust, fuel storage or noise conditions constrain a diesel set, including works inside occupied buildings.' },
   { t: 'Mining and remote operations', b: 'Sustained high-load generation where cost per kilowatt-hour matters more than cost per day, and where fuel logistics are already a solved problem.' },
   { t: 'Data centres and telecommunications', b: 'Indoor-capable generation for primary or backup duty, without an exhaust route or a flue penetration.' },
 ];
-
 const faq = [
-  {
-    q: 'How does the cost compare to a diesel set?',
-    a: 'At low, intermittent load a diesel set is usually cheaper. At sustained high load the economics move, because fuel-cell efficiency holds up where a diesel generator running below its rating does not. We model your actual load profile at quoting rather than quote a headline rate.',
-  },
-  {
-    q: 'Is this carbon neutral?',
-    a: 'At the point of use there is no carbon emission at all — the by-product is water. Lifecycle carbon depends entirely on how the hydrogen was produced, so we tell you the source of the hydrogen we supply and let you do your own accounting. We will not describe a hire as carbon neutral unless the fuel supply actually supports the claim.',
-  },
-  {
-    q: 'Can it really be installed indoors?',
-    a: 'There is no exhaust to route, which removes the usual blocker. Indoor installation still needs a ventilation, gas-detection and fire-safety assessment for your specific space, and that assessment is part of the hire, not an afterthought.',
-  },
-  {
-    q: 'Do you supply the hydrogen?',
-    a: 'On a wet hire, yes — fuel and logistics are included and priced up front. On a dry hire you supply fuel to an agreed specification.',
-  },
-  {
-    q: 'What happens if a unit fails on site?',
-    a: 'Response terms are part of the hire agreement and are written down before mobilisation, including whether a standby unit is held and where it sits.',
-  },
+  { q: 'How does the cost compare to a diesel set?', a: 'At low, intermittent load a diesel set is usually cheaper. At sustained high load the economics move, because fuel-cell efficiency holds up where a diesel generator running below its rating does not. We model your actual load profile at quoting rather than quote a headline rate.' },
+  { q: 'Is this carbon neutral?', a: 'At the point of use there is no carbon emission at all; the by-product is water. Lifecycle carbon depends entirely on how the hydrogen was produced, so we tell you the source of the hydrogen we supply and let you do your own accounting. We will not describe a hire as carbon neutral unless the fuel supply actually supports the claim.' },
+  { q: 'Can it really be installed indoors?', a: 'There is no exhaust to route, which removes the usual blocker. Indoor installation still needs a ventilation, gas-detection and fire-safety assessment for your specific space, and that assessment is part of the hire, not an afterthought.' },
+  { q: 'Do you supply the hydrogen?', a: 'On a wet hire, yes: fuel and logistics are included and priced up front. On a dry hire you supply fuel to an agreed specification.' },
+  { q: 'What happens if a unit fails on site?', a: 'Response terms are part of the hire agreement and are written down before mobilisation, including whether a standby unit is held and where it sits.' },
 ];
-
 const schema = [
-  {
-    '@type': 'Service',
-    '@id': `${site.url}/power/#service`,
-    name: 'Zero-emission hydrogen fuel-cell power hire',
-    serviceType: 'Generator hire',
-    description:
-      '250 kVA hydrogen fuel-cell generators for hire across Australia — 800 A per unit, no exhaust, no combustion noise, indoor-capable.',
-    url: `${site.url}/power/`,
-    provider: { '@id': `${site.url}/#organisation` },
-    areaServed: { '@type': 'Country', name: 'Australia' },
-  },
-  {
-    '@type': 'FAQPage',
-    '@id': `${site.url}/power/#faq`,
-    mainEntity: faq.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  },
+  { '@type': 'Service', '@id': `${site.url}/power/#service`, name: 'Zero-emission hydrogen fuel-cell power hire', serviceType: 'Generator hire', description: '250 kVA hydrogen fuel-cell generators for hire across Australia: 800 A per unit, no exhaust, no combustion noise, indoor-capable.', url: `${site.url}/power/`, provider: { '@id': `${site.url}/#organisation` }, areaServed: { '@type': 'Country', name: 'Australia' } },
+  { '@type': 'FAQPage', '@id': `${site.url}/power/#faq`, mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
 ];
 ---
-<Base
-  title="Hydrogen fuel-cell power hire"
-  image="/og/power.png"
-  description="Hire 250 kVA hydrogen fuel-cell generators in Australia. 800 A per unit, no exhaust and no combustion noise — deployable indoors and in noise-restricted sites."
-  schema={schema}>
-  <PageHeader
-    eyebrow="05 — Zero-emission power"
-    title="Silent power. No exhaust."
-    lede="We hire out the same class of hydrogen fuel-cell generation we run at our own facility: 250 kVA in a compact package, with water as the only by-product — so it goes where a diesel set cannot."
-  />
+<Base title="Hydrogen fuel-cell power hire" description="Hire 250 kVA hydrogen fuel-cell generators in Australia. 800 A per unit, no exhaust and no combustion noise — deployable indoors and in noise-restricted sites." image="/og/power.png" schema={schema}>
+  <PageHeader title="Silent power. No exhaust." lede="We hire out the same class of hydrogen fuel-cell generation we run at our own facility: 250 kVA in a compact package, with water as the only by-product, so it goes where a diesel set cannot." />
 
-  <Section rule={false}>
-    <div class="split split--wide">
-      <div class="split__aside">
-        <h2 class="sub">Specification</h2>
-        <p class="muted small" style="margin-block-start:1rem">
-          To our knowledge, no other Australian supplier hires out hydrogen fuel-cell generation at
-          800&nbsp;A per unit. If that has changed, we would genuinely like to know.
-        </p>
+  <div class="wrap wall wall--top">
+    <Placard tone="black" i={1}>
+      <div class="split">
+        <div>
+          <h2 class="h-mid">Specification</h2>
+          <p class="sub" style="margin-block-start:1rem;max-width:40ch">To our knowledge, no other Australian supplier hires out hydrogen fuel-cell generation at 800 A per unit. If that has changed, we would genuinely like to know.</p>
+          <Plate src={power} alt="An industrial power enclosure on wet concrete at night with a single amber indicator lit" ratio="4 / 3" class="mt" />
+        </div>
+        <dl class="plate">{spec.map((s) => (<div><dt>{s.k}</dt><dd>{s.v}</dd></div>))}</dl>
       </div>
-      <dl class="rows">
-        {spec.map((s) => (<div><dt>{s.k}</dt><dd>{s.v}</dd></div>))}
-      </dl>
-    </div>
-  </Section>
+    </Placard>
 
-  <Section no="A" label="Where it goes" alt={true}>
-    <h2 class="sub">Where it goes</h2>
-    <div class="grid-sheet grid-4 uses">
-      {uses.map((u) => (
-        <article>
-          <h3>{u.t}</h3>
-          <p class="small muted">{u.b}</p>
-        </article>
-      ))}
-    </div>
-  </Section>
+    <Placard tone="yellow" i={2}>
+      <h2 class="h-mid">Where it goes</h2>
+      <ul class="uses">
+        {uses.map((u) => (<li><h3>{u.t}</h3><p class="sub">{u.b}</p></li>))}
+      </ul>
+    </Placard>
 
-  <Section no="B" label="Why fuel cell">
-    <div class="split split--wide">
-      <div class="split__aside"><h2 class="sub">Why fuel cell, honestly</h2></div>
-      <div class="flow">
-        <p class="muted">
-          A fuel cell is not automatically the right answer. It wins decisively on three constraints
-          and loses on a fourth, and we would rather you knew which case you are in before you hire
-          anything from us.
-        </p>
-        <ul class="ticks" style="margin-block-start:1.25rem">
-          <li><strong>Noise.</strong> There is no engine, so there is no engine noise. Sites with curfews, residential neighbours or acoustic conditions stop being a fight.</li>
-          <li><strong>Exhaust.</strong> There is nothing to vent, which is what makes indoor, enclosed and underground installation possible at all.</li>
-          <li><strong>Sustained high load.</strong> Efficiency holds where a diesel set running below its rating does not, so cost per kilowatt-hour improves as duty gets heavier.</li>
-          <li><strong>Where it loses — light, intermittent duty.</strong> If you need a set that idles most of the week and occasionally takes a small load, diesel is cheaper and we will say so.</li>
-        </ul>
+    <Placard tone="black" i={3}>
+      <div class="split">
+        <div>
+          <h2 class="h-mid">Why fuel cell, honestly</h2>
+          <Plate src={busbar} alt="A thick copper busbar with bolted lugs inside a switchboard" ratio="16 / 10" class="mt" />
+        </div>
+        <div class="flow">
+          <p class="sub">A fuel cell is not automatically the right answer. It wins decisively on three constraints and loses on a fourth, and we would rather you knew which case you are in before you hire anything from us.</p>
+          <ul class="list">
+            <li><strong>Noise.</strong> There is no engine, so there is no engine noise. Sites with curfews, residential neighbours or acoustic conditions stop being a fight.</li>
+            <li><strong>Exhaust.</strong> There is nothing to vent, which is what makes indoor, enclosed and underground installation possible at all.</li>
+            <li><strong>Sustained high load.</strong> Efficiency holds where a diesel set running below its rating does not, so cost per kilowatt-hour improves as duty gets heavier.</li>
+            <li><strong>Where it loses: light, intermittent duty.</strong> If you need a set that idles most of the week and occasionally takes a small load, diesel is cheaper and we will say so.</li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </Section>
+    </Placard>
 
-  <Section no="C" label="Questions" alt={true}>
-    <div class="split split--wide">
-      <div class="split__aside"><h2 class="sub">Questions we get asked</h2></div>
-      <Faq items={faq} />
-    </div>
-  </Section>
+    <Placard tone="yellow" i={4}>
+      <div class="split"><h2 class="h-mid">Questions we get asked</h2><Faq items={faq} /></div>
+    </Placard>
 
-  <Section no="D" label="Enquiries">
-    <div class="split split--wide">
-      <div class="split__aside">
-        <h2 class="sub">Get a hire quote</h2>
-        <p class="muted small" style="margin-block-start:1rem">
-          Tell us the load profile, the site and the dates. We model your actual duty cycle and quote
-          against it, including fuel and logistics if you want a wet hire.
-        </p>
-        <p class="small" style="margin-block-start:1rem">
-          Or email <a class="tlink" href={`mailto:${site.email}`}>{site.email}</a>.
-        </p>
+    <Placard tone="black" i={5}>
+      <div class="split">
+        <div>
+          <h2 class="h-mid">Get a hire quote</h2>
+          <p class="sub" style="margin-block-start:1rem;max-width:40ch">Tell us the load profile, the site and the dates. We model your actual duty cycle and quote against it, including fuel and logistics if you want a wet hire.</p>
+          <p class="small" style="margin-block-start:1rem">Or email <a class="lk" href={`mailto:${site.email}`}>{site.email}</a>.</p>
+        </div>
+        <EnquiryForm id="enq-power" topic="Zero-emission power hire" />
       </div>
-      <EnquiryForm id="enq-power" topic="Zero-emission power hire" />
-    </div>
-  </Section>
+    </Placard>
+  </div>
 </Base>
 
 <style>
-  .sub { font-size: var(--step-2); }
-  .uses { margin-block-start: 1.75rem; }
-  .uses h3 { margin-block-end: 0.6rem; }
-  .rows a { color: var(--action); }
-  .flow strong { color: var(--ink); font-weight: 600; }
+  .wall--top { margin-block-start: clamp(0.9rem, 0.5rem + 1.6vw, 1.75rem); padding-block-end: var(--band); }
+  .h-mid { font-size: var(--t2); }
+  .mt { margin-block-start: 1.5rem; }
+  .uses { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 1.5rem; border-top: 2px solid var(--fg); }
+  @media (min-width: 52rem) { .uses { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; } }
+  .uses li { padding-block-start: 1rem; }
+  .uses h3 { font-size: var(--t2); margin-block-end: 0.5rem; }
+  .flow strong { font-weight: 700; color: var(--fg); }
 </style>

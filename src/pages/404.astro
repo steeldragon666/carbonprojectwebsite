@@ -1,39 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
-import Section from '../components/Section.astro';
+import Placard from '../components/Placard.astro';
 import { nav, offers } from '../data/site';
 ---
-<Base
-  title="Page not found"
-  description="That page does not exist on carbonproject.ai."
-  noindex={true}>
-  <Section rule={false}>
-    <div class="nf">
-      <p class="anno anno--ink">Error 404</p>
-      <h1>That sheet is not in this set.</h1>
-      <p class="lede" style="margin-block-start:1.25rem">
-        The page you asked for does not exist. Everything on the site is one of these.
-      </p>
-      <ul class="nf__list">
-        <li><a href="/">Front page</a></li>
-        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
-        {offers.map((o) => <li><a href={o.href}>{o.title}</a></li>)}
-        <li><a href="/contact/">Contact</a></li>
+<Base title="Page not found" description="That page does not exist on carbonproject.ai." noindex={true}>
+  <div class="wrap band">
+    <Placard tone="yellow" i={0}>
+      <p class="tag">Error 404</p>
+      <h1 style="margin-block-start:1rem">No such placard.</h1>
+      <p class="lede" style="margin-block-start:1.25rem">The page you asked for does not exist. Everything on the site is one of these.</p>
+      <ul class="nf">
+        <li><a class="lk" href="/">Front page</a></li>
+        {nav.map((n) => <li><a class="lk" href={n.href}>{n.label}</a></li>)}
+        {offers.map((o) => <li><a class="lk" href={o.href}>{o.title}</a></li>)}
+        <li><a class="lk" href="/contact/">Contact</a></li>
       </ul>
-    </div>
-  </Section>
+    </Placard>
+  </div>
 </Base>
-
 <style>
-  .nf { padding-block: clamp(1rem, 0.5rem + 3vw, 4rem); }
-  .nf h1 { margin-block-start: 1rem; font-size: var(--step-4); max-width: 16ch; }
-  .nf__list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-    list-style: none;
-    margin-block-start: 2rem;
-    padding: 0;
-  }
-  .nf__list a { color: var(--action); font-size: var(--step--1); }
+  .nf { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; list-style: none; margin-block-start: 2rem; padding: 0; }
 </style>

@@ -104,12 +104,16 @@ docs/           AUDIT.md, CLAIMS-REGISTER.md
 
 ## Design system
 
-The site is drawn as a technical sheet: paper ground, hairline rules, ink type,
-one signal colour (amber) for energised paths and one action colour (blue) for
-things you can click. Tokens are defined once at the top of
-`src/styles/global.css` and every page uses them; light and dark are both
-defined explicitly, and the viewer's system preference is respected.
+The visual world is **Switchyard Placard**: the page is the site's own safety
+signage. Signal-yellow enamel placards carry the surface, black panels
+instruct, white exists only as text on black. Rivets at placard corners, 2px
+rules, zero radius, no gradients or glass. Display type is Big Shoulders
+Display (condensed caps), body is Barlow, both self-hosted through Fontsource.
+Tokens live at the top of `src/styles/global.css`; every page uses the
+`Placard`, `Plate`, `.plate` (nameplate rows) and `.sw` (switch button)
+primitives. The direction contract and product truth are recorded for future
+rounds in `PRODUCT.md`, `DESIGN.md` and `.impeccable/surfaces/`.
 
-Type: Space Grotesk (display), Inter (body), JetBrains Mono (annotations), all
-self-hosted via Fontsource — no third-party font request, which matters for a
-company selling data sovereignty.
+Imagery is generated (Higgsfield) and illustrative. Every plate carries an
+"Illustrative image" label, the footer says so, and each PNG carries its
+generation prompt as embedded metadata. None of it depicts the real facility.

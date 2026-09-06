@@ -1,116 +1,72 @@
 ---
-import Logo from './Logo.astro';
 import { site, nav, cta } from '../data/site';
 const path = Astro.url.pathname;
 const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
 ---
-<header class="site-head">
-  <div class="wrap site-head__in">
-    <a href="/" class="brand" aria-label={`${site.name} — home`}>
-      <Logo size={18} />
-      <span class="brand__full">{site.name}</span>
-      <span class="brand__short" aria-hidden="true">Carbon Project</span>
+<header class="rail">
+  <div class="wrap rail__in">
+    <a href="/" class="asset" aria-label={`${site.name} — home`}>
+      <span class="asset__tag" aria-hidden="true">CP</span>
+      <span class="asset__name">{site.name}</span>
     </a>
-
-    <nav class="site-nav" aria-label="Primary">
+    <nav class="rail__nav" aria-label="Primary">
       <ul>
-        {nav.map((item) => (
-          <li>
-            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
-          </li>
+        {nav.map((n) => (
+          <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
         ))}
-        <li class="site-nav__cta">
-          <a href={cta.href} aria-current={isCurrent(cta.href) ? 'page' : undefined}>{cta.label}</a>
-        </li>
+        <li class="rail__cta"><a href={cta.href} class="sw sw--sm">{cta.label}</a></li>
       </ul>
     </nav>
   </div>
 </header>
 
 <style>
-  .site-head {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: color-mix(in srgb, var(--paper) 90%, transparent);
-    backdrop-filter: saturate(150%) blur(10px);
-    border-bottom: 1px solid var(--rule);
+  .rail {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--black);
+    border-bottom: 2px solid var(--steel);
   }
-  .site-head__in {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0 1.5rem;
-    min-height: 3.25rem;
+  .rail__in {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 0 1.5rem; min-height: 3.5rem;
   }
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--display);
-    font-weight: 600;
-    font-size: var(--step--1);
-    letter-spacing: -0.012em;
-    text-decoration: none;
-    white-space: nowrap;
-    padding-block: 0.5rem;
+  .asset { display: inline-flex; align-items: stretch; text-decoration: none; padding-block: 0.55rem; }
+  .asset__tag {
+    display: inline-flex; align-items: center;
+    padding: 0.2rem 0.5rem;
+    background: var(--yellow); color: var(--black);
+    font-family: var(--display); font-weight: 800; font-size: 1.05rem; letter-spacing: 0.04em;
   }
-  .brand__short { display: none; }
-  @media (max-width: 26rem) {
-    .brand__full { display: none; }
-    .brand__short { display: inline; }
+  .asset__name {
+    display: inline-flex; align-items: center;
+    padding: 0.2rem 0.65rem;
+    border: 2px solid var(--yellow); border-left: 0;
+    font-family: var(--display); font-weight: 700; font-size: 0.95rem;
+    text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap;
   }
+  @media (max-width: 26rem) { .asset__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
 
-  /* Mobile: a single scrollable rail keeps every destination one tap away. */
-  .site-nav {
+  .rail__nav {
     flex: 1 0 100%;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    margin-inline: calc(var(--gutter) * -1);
-    padding-inline: var(--gutter);
-    border-top: 1px solid var(--rule);
+    overflow-x: auto; scrollbar-width: none;
+    margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter);
+    border-top: 1px solid var(--steel);
   }
-  .site-nav::-webkit-scrollbar { display: none; }
-  .site-nav ul {
-    display: flex;
-    align-items: center;
-    gap: 1.15rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    width: max-content;
+  .rail__nav::-webkit-scrollbar { display: none; }
+  .rail__nav ul { display: flex; align-items: center; gap: 1.2rem; list-style: none; margin: 0; padding: 0; width: max-content; }
+  .rail__nav a:not(.sw) {
+    display: block; padding-block: 0.7rem;
+    font-weight: 500; font-size: var(--t-1); color: var(--ink2-k); text-decoration: none; white-space: nowrap;
+    border-bottom: 3px solid transparent;
   }
-  .site-nav a {
-    display: block;
-    font-size: var(--step--1);
-    color: var(--ink-2);
-    text-decoration: none;
-    white-space: nowrap;
-    padding-block: 0.6rem;
-    border-bottom: 2px solid transparent;
-  }
-  .site-nav a:hover { color: var(--ink); }
-  .site-nav a[aria-current='page'] { color: var(--ink); border-bottom-color: var(--signal); }
-  .site-nav__cta a {
-    color: var(--action);
-    font-weight: 600;
-    text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--action) 35%, transparent);
-  }
-  .site-nav__cta a:hover { text-decoration-color: currentColor; }
+  .rail__nav a:not(.sw):hover { color: var(--white); }
+  .rail__nav a[aria-current='page'] { color: var(--white); border-bottom-color: var(--yellow); }
+  .sw--sm { min-height: 2.2rem; font-size: 0.95rem; padding: 0.35em 0.9em 0.35em 0.7em; margin-block: 0.4rem; }
 
   @media (min-width: 62rem) {
-    .site-head__in { flex-wrap: nowrap; min-height: 3.5rem; }
-    .site-nav {
-      flex: 0 1 auto;
-      overflow: visible;
-      margin-inline: 0;
-      padding-inline: 0;
-      border-top: 0;
-    }
-    .site-nav ul { gap: 1.6rem; }
-    .site-nav a { padding-block: 0.35rem; border-bottom-width: 1px; }
+    .rail__in { flex-wrap: nowrap; }
+    .rail__nav { flex: 0 1 auto; overflow: visible; margin-inline: 0; padding-inline: 0; border-top: 0; }
+    .rail__nav ul { gap: 1.6rem; }
+    .rail__nav a:not(.sw) { padding-block: 0.4rem; }
   }
 </style>

@@ -1,91 +1,54 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import Section from '../../components/Section.astro';
+import Placard from '../../components/Placard.astro';
 import EnquiryForm from '../../components/EnquiryForm.astro';
 import { site, offers } from '../../data/site';
-
-const schema = [
-  {
-    '@type': 'ContactPage',
-    '@id': `${site.url}/contact/#page`,
-    url: `${site.url}/contact/`,
-    name: 'Contact',
-    isPartOf: { '@id': `${site.url}/#website` },
-    about: { '@id': `${site.url}/#organisation` },
-  },
-];
+const schema = [{ '@type': 'ContactPage', '@id': `${site.url}/contact/#page`, url: `${site.url}/contact/`, name: 'Contact', isPartOf: { '@id': `${site.url}/#website` }, about: { '@id': `${site.url}/#organisation` } }];
 ---
-<Base
-  title="Contact"
-  image="/og/contact.png"
-  description="Book a scoping call with Carbon Project Australia, or email aaron@carbonproject.com.au. We reply within one business day."
-  schema={schema}>
-  <PageHeader
-    eyebrow="Enquiries"
-    title="Tell us what you need."
-    lede="A short call and a written brief that says what we would do and what it costs. Fixed fee, credited against delivery if you proceed, and yours to keep either way."
-  />
+<Base title="Contact" description="Book a scoping call with Carbon Project Australia, or email aaron@carbonproject.com.au. We reply within one business day." image="/og/contact.png" schema={schema}>
+  <PageHeader title="Tell us what you need." lede="A short call and a written brief that says what we would do and what it costs. Fixed fee, credited against delivery if you proceed, and yours to keep either way." />
 
-  <Section rule={false}>
-    <div class="split split--wide">
-      <div class="split__aside">
-        <dl class="rows">
-          <div><dt>Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
-          <div><dt>Location</dt><dd>{site.location.region}, {site.location.stateName} — {site.location.note}</dd></div>
-          <div><dt>Response</dt><dd>{site.responseTime}</dd></div>
-          <div><dt>Entity</dt><dd>{site.legalName}, established {site.founded}</dd></div>
-        </dl>
-
-        <div class="helper">
-          <p class="anno">Useful things to include</p>
-          <ul class="ticks" style="margin-block-start:0.75rem">
-            <li>What you are trying to do, in your own words</li>
-            <li>What data or hardware is involved, and where it currently sits</li>
-            <li>Any jurisdiction, clearance or accreditation constraint you carry</li>
-            <li>The deadline, if there is a real one</li>
-          </ul>
+  <div class="wrap wall wall--top">
+    <Placard tone="black" i={1}>
+      <div class="split">
+        <div>
+          <dl class="plate">
+            <div><dt>Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+            <div><dt>Site</dt><dd>{site.location.region}, {site.location.stateName}. {site.location.note}</dd></div>
+            <div><dt>Response</dt><dd>{site.responseTime}</dd></div>
+            <div><dt>Entity</dt><dd>{site.legalName}, established {site.founded}</dd></div>
+          </dl>
+          <div class="helper">
+            <h2 class="h-sm">Useful things to include</h2>
+            <ul class="list">
+              <li>What you are trying to do, in your own words</li>
+              <li>What data or hardware is involved, and where it currently sits</li>
+              <li>Any jurisdiction, clearance or accreditation constraint you carry</li>
+              <li>The deadline, if there is a real one</li>
+            </ul>
+          </div>
         </div>
-      </div>
-
-      <div>
         <EnquiryForm id="contact-enquiry" />
       </div>
-    </div>
-  </Section>
+    </Placard>
 
-  <Section no="A" label="Not sure which one" alt={true}>
-    <h2 class="sub">If you are not sure which one you need</h2>
-    <p class="muted" style="margin-block-start:1rem;max-width:60ch">
-      Say so in the brief and we will point you at the right one, including when the right one is
-      nothing. Here is the short version.
-    </p>
-    <dl class="rows router">
-      {offers.map((o) => (
-        <div>
-          <dt><a href={o.href}>{o.title}</a></dt>
-          <dd>{o.summary}</dd>
-        </div>
-      ))}
-      <div>
-        <dt><a href="/power/">Zero-emission power hire</a></dt>
-        <dd>You need generation on a site where a diesel set is awkward, restricted, or not allowed at all.</dd>
-      </div>
-    </dl>
-  </Section>
+    <Placard tone="yellow" i={2}>
+      <h2 class="h-mid">If you are not sure which one you need</h2>
+      <p class="sub" style="margin-block-start:0.75rem;max-width:60ch">Say so in the brief and we will point you at the right one, including when the right one is nothing. Here is the short version.</p>
+      <dl class="plate" style="margin-block-start:1.5rem">
+        {offers.map((o) => (<div><dt><a href={o.href}>{o.title}</a></dt><dd>{o.summary}</dd></div>))}
+        <div><dt><a href="/power/">Zero-emission power hire</a></dt><dd>You need generation on a site where a diesel set is awkward, restricted, or not allowed at all.</dd></div>
+      </dl>
+    </Placard>
+  </div>
 </Base>
 
 <style>
-  .sub { font-size: var(--step-2); }
-  .rows a { color: var(--action); }
-  .helper {
-    margin-block-start: 2rem;
-    padding: 1.15rem 1.25rem;
-    border: 1px solid var(--rule);
-    border-left: 3px solid var(--signal);
-    border-radius: var(--radius);
-    background: var(--sheet);
-  }
-  .router { margin-block-start: 1.75rem; }
-  .router dt { font-size: var(--step-0); }
+  .wall--top { margin-block-start: clamp(0.9rem, 0.5rem + 1.6vw, 1.75rem); padding-block-end: var(--band); }
+  .h-mid { font-size: var(--t2); }
+  .h-sm { font-size: var(--t1); margin-block-end: 0.75rem; }
+  .helper { margin-block-start: 2rem; padding: 1.25rem; border: 2px solid var(--fg); }
+  .plate dt a { text-decoration: none; }
+  .plate dt a:hover { text-decoration: underline; }
 </style>

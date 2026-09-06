@@ -1,171 +1,79 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import Section from '../components/Section.astro';
+import Placard from '../components/Placard.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site, engagementSteps } from '../data/site';
 
 const detail: Record<string, { produces: string; costs: string; exit: string }> = {
-  Scope: {
-    produces: 'A written brief: the problem as we understand it, what we would do, what it costs, what it does not include, and how we would know it worked.',
-    costs: 'A fixed fee, quoted before the call. Credited in full against delivery if you proceed.',
-    exit: 'You keep the brief either way. It is written so another supplier could quote against it.',
-  },
-  Pilot: {
-    produces: 'A working result against the brief, plus the measurements that show whether it hit the acceptance criteria.',
-    costs: 'Fixed price, fixed end date, agreed before work starts.',
-    exit: 'If the pilot misses its criteria we say so in writing, including when the honest recommendation is to stop.',
-  },
-  Deploy: {
-    produces: 'The thing running — on our node, in your building, or both — with documentation and training for your own people.',
-    costs: 'Priced at the end of pilot, when the unknowns are gone.',
-    exit: 'Hand-over is designed so you can operate without us. That is the point of the documentation.',
-  },
-  Operate: {
-    produces: 'Monitoring, retraining, support and a named person who answers.',
-    costs: 'A monthly fee. No annual minimum, no automatic escalation.',
-    exit: 'Cancellable with notice. Nothing rolls over on its own.',
-  },
+  Scope: { produces: 'A written brief: the problem as we understand it, what we would do, what it costs, what it does not include, and how we would know it worked.', costs: 'A fixed fee, quoted before the call. Credited in full against delivery if you proceed.', exit: 'You keep the brief either way. It is written so another supplier could quote against it.' },
+  Pilot: { produces: 'A working result against the brief, plus the measurements that show whether it hit the acceptance criteria.', costs: 'Fixed price, fixed end date, agreed before work starts.', exit: 'If the pilot misses its criteria we say so in writing, including when the honest recommendation is to stop.' },
+  Deploy: { produces: 'The thing running, on our node, in your building, or both, with documentation and training for your own people.', costs: 'Priced at the end of pilot, when the unknowns are gone.', exit: 'Hand-over is designed so you can operate without us. That is the point of the documentation.' },
+  Operate: { produces: 'Monitoring, retraining, support and a named person who answers.', costs: 'A monthly fee. No annual minimum, no automatic escalation.', exit: 'Cancellable with notice. Nothing rolls over on its own.' },
 };
-
 const principles = [
-  {
-    t: 'A number before a commitment',
-    b: 'You see a fixed price and a fixed scope in writing before anything starts. We do not quote ranges and then bill at the top of them.',
-  },
-  {
-    t: 'We will tell you not to buy it',
-    b: 'Scoping engagements regularly end with a recommendation cheaper than what the client came in asking for, and some end with “do not do this”. That is the value of the step.',
-  },
-  {
-    t: 'Documentation you could tender',
-    b: 'Every deliverable is written so a third party could pick it up. That is deliberate: work you cannot leave is not work you were free to buy.',
-  },
-  {
-    t: 'One team, one site',
-    b: 'The people who scope the work are the people who build it, in the building where it runs. Nothing is quietly subcontracted offshore.',
-  },
+  { t: 'A number before a commitment', b: 'You see a fixed price and a fixed scope in writing before anything starts. We do not quote ranges and then bill at the top of them.' },
+  { t: 'We will tell you not to buy it', b: 'Scoping engagements regularly end with a recommendation cheaper than what the client came in asking for, and some end with “do not do this”. That is the value of the step.' },
+  { t: 'Documentation you could tender', b: 'Every deliverable is written so a third party could pick it up. Work you cannot leave is not work you were free to buy.' },
+  { t: 'One team, one site', b: 'The people who scope the work are the people who build it, in the building where it runs. Nothing is quietly subcontracted offshore.' },
 ];
-
 const faq = [
-  {
-    q: 'Why do you charge for scoping?',
-    a: 'Because it is real work and it produces a real document. A free proposal is a sales artefact; a paid brief is an engineering one. The fee is credited against delivery, so proceeding costs you nothing extra.',
-  },
-  {
-    q: 'What if we only want the pilot?',
-    a: 'That is a completely normal outcome. The pilot is designed to stand alone and to be measurable, precisely so that stopping there is an available decision rather than an awkward one.',
-  },
-  {
-    q: 'Do you sign our contract or yours?',
-    a: 'Either. We will read yours and tell you which clauses we cannot accept and why, before you spend money on legal review.',
-  },
-  {
-    q: 'Can you work under a security or clearance requirement?',
-    a: 'Tell us the requirement at scoping. We will say plainly whether we currently meet it, what it would take to meet it, or that we cannot.',
-  },
-  {
-    q: 'What if the project fails?',
-    a: 'Then we say so, in writing, with the evidence. A pilot that produces a clear negative result has done its job — it cost you a fixed, bounded amount instead of an open-ended one.',
-  },
+  { q: 'Why do you charge for scoping?', a: 'Because it is real work and it produces a real document. A free proposal is a sales artefact; a paid brief is an engineering one. The fee is credited against delivery, so proceeding costs you nothing extra.' },
+  { q: 'What if we only want the pilot?', a: 'That is a completely normal outcome. The pilot is designed to stand alone and to be measurable, precisely so that stopping there is an available decision rather than an awkward one.' },
+  { q: 'Do you sign our contract or yours?', a: 'Either. We will read yours and tell you which clauses we cannot accept and why, before you spend money on legal review.' },
+  { q: 'Can you work under a security or clearance requirement?', a: 'Tell us the requirement at scoping. We will say plainly whether we currently meet it, what it would take to meet it, or that we cannot.' },
+  { q: 'What if the project fails?', a: 'Then we say so, in writing, with the evidence. A pilot that produces a clear negative result has done its job: it cost you a fixed, bounded amount instead of an open-ended one.' },
 ];
-
 const schema = [
-  {
-    '@type': 'HowTo',
-    '@id': `${site.url}/how-we-work/#howto`,
-    name: 'How an engagement with Carbon Project Australia runs',
-    step: engagementSteps.map((s, i) => ({
-      '@type': 'HowToStep',
-      position: i + 1,
-      name: s.title,
-      text: s.body,
-    })),
-  },
-  {
-    '@type': 'FAQPage',
-    '@id': `${site.url}/how-we-work/#faq`,
-    mainEntity: faq.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  },
+  { '@type': 'HowTo', '@id': `${site.url}/how-we-work/#howto`, name: 'How an engagement with Carbon Project Australia runs', step: engagementSteps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.title, text: s.body })) },
+  { '@type': 'FAQPage', '@id': `${site.url}/how-we-work/#faq`, mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
 ];
 ---
-<Base
-  title="How we work"
-  image="/og/how-we-work.png"
-  description="Scope, pilot, deploy, operate. A written price before anything starts, a measurable result before any ongoing commitment, and documentation you can keep."
-  schema={schema}>
-  <PageHeader
-    eyebrow="06 — How we work"
-    title="Short, fixed, and measurable."
-    lede="You see a result before you commit to anything ongoing, and nothing rolls over on its own. Four steps, each with its own exit."
-  />
+<Base title="How we work" description="Scope, pilot, deploy, operate. A written price before anything starts, a measurable result before any ongoing commitment, and documentation you can keep." image="/og/how-we-work.png" schema={schema}>
+  <PageHeader title="Short, fixed, and measurable." lede="You see a result before you commit to anything ongoing, and nothing rolls over on its own. Four steps, each with its own exit." />
 
-  <Section rule={false}>
-    <ol class="steps">
-      {engagementSteps.map((s) => (
-        <li class="step sheet">
-          <div class="step__head">
-            <span class="steps__n anno">{s.n}</span>
-            <h2>{s.title}</h2>
-            <p class="muted small">{s.body}</p>
+  <div class="wrap wall wall--top">
+    <ol class="wall steps">
+      {engagementSteps.map((s, i) => (
+        <Placard tone={i % 2 === 0 ? 'yellow' : 'black'} as="li" i={1 + i}>
+          <div class="split">
+            <div>
+              <span class="steps__n" aria-hidden="true">{s.n}</span>
+              <h2>{s.title}</h2>
+              <p class="lede" style="margin-block-start:0.75rem">{s.body}</p>
+            </div>
+            <dl class="plate">
+              <div><dt>Produces</dt><dd>{detail[s.title]!.produces}</dd></div>
+              <div><dt>Costs</dt><dd>{detail[s.title]!.costs}</dd></div>
+              <div><dt>Your exit</dt><dd>{detail[s.title]!.exit}</dd></div>
+            </dl>
           </div>
-          <dl class="rows step__rows">
-            <div><dt>Produces</dt><dd>{detail[s.title]!.produces}</dd></div>
-            <div><dt>Costs</dt><dd>{detail[s.title]!.costs}</dd></div>
-            <div><dt>Your exit</dt><dd>{detail[s.title]!.exit}</dd></div>
-          </dl>
-        </li>
+        </Placard>
       ))}
     </ol>
-  </Section>
 
-  <Section no="A" label="Principles" alt={true}>
-    <h2 class="sub">Four things we hold to</h2>
-    <div class="grid-sheet grid-4 principles">
-      {principles.map((p) => (
-        <article>
-          <h3>{p.t}</h3>
-          <p class="small muted">{p.b}</p>
-        </article>
-      ))}
-    </div>
-  </Section>
+    <Placard tone="yellow" i={5}>
+      <h2 class="h-mid">Four things we hold to</h2>
+      <ul class="pr">
+        {principles.map((p) => (<li><h3>{p.t}</h3><p class="sub">{p.b}</p></li>))}
+      </ul>
+    </Placard>
 
-  <Section no="B" label="Questions">
-    <div class="split split--wide">
-      <div class="split__aside"><h2 class="sub">Questions we get asked</h2></div>
-      <Faq items={faq} />
-    </div>
-  </Section>
-
+    <Placard tone="black" i={6}>
+      <div class="split"><h2 class="h-mid">Questions we get asked</h2><Faq items={faq} /></div>
+    </Placard>
+  </div>
   <CtaBand />
 </Base>
 
 <style>
-  .sub { font-size: var(--step-2); }
-  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem; }
-  .step {
-    display: grid;
-    gap: 1.5rem;
-    padding: clamp(1.25rem, 0.9rem + 1.5vw, 2.25rem);
-  }
-  @media (min-width: 56rem) {
-    .step { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 2.5rem; align-items: start; }
-  }
-  .steps__n {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 1.9rem; height: 1.9rem;
-    border: 1px solid var(--rule-strong); border-radius: var(--radius);
-    color: var(--ink); font-weight: 700;
-  }
-  .step h2 { font-size: var(--step-3); margin-block: 0.9rem 0.6rem; }
-  .step__rows { border-top: 0; }
-  .step__rows > div:last-child { border-bottom: 0; padding-block-end: 0; }
-  .principles { margin-block-start: 1.75rem; }
-  .principles h3 { margin-block-end: 0.6rem; }
+  .wall--top { margin-block-start: clamp(0.9rem, 0.5rem + 1.6vw, 1.75rem); }
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps__n { display: block; font-family: var(--display); font-weight: 800; font-size: var(--t4); line-height: 0.85; margin-block-end: 0.25rem; }
+  .h-mid { font-size: var(--t2); }
+  .pr { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 1.5rem; border-top: 2px solid var(--fg); }
+  @media (min-width: 52rem) { .pr { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; } }
+  .pr li { padding-block-start: 1rem; }
+  .pr h3 { font-size: var(--t2); margin-block-end: 0.5rem; }
 </style>

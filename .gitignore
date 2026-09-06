@@ -8,3 +8,8 @@ dist/
 *.log
 .vercel/
 .netlify/
+
+# Impeccable review captures are regenerated every round; config and briefs are committed.
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/config.local.json

@@ -80,7 +80,7 @@ const usingMailto = !endpoint;
   </div>
 
   <div class="ef__foot">
-    <button class="btn" type="submit">Send enquiry</button>
+    <button class="sw" type="submit">Send enquiry</button>
     <p class="small muted ef__note">
       {site.responseTime} We use what you send only to answer your enquiry — see our
       <a href="/legal/privacy/">privacy notice</a>. Prefer email?
@@ -125,55 +125,31 @@ const usingMailto = !endpoint;
 )}
 
 <style>
-  .ef__hp {
-    position: absolute !important;
-    width: 1px; height: 1px;
-    padding: 0; margin: -1px;
-    overflow: hidden; clip: rect(0 0 0 0);
-    white-space: nowrap; border: 0;
-  }
-  .ef__grid {
-    display: grid;
-    gap: 1.15rem;
-    grid-template-columns: 1fr;
-  }
+  .ef__hp { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .ef__grid { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
   @media (min-width: 40rem) { .ef__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .ef__field { margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
   .ef__field--full { grid-column: 1 / -1; }
   .ef label {
-    font-family: var(--mono);
-    font-size: var(--step--2);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-2);
+    font-family: var(--display); font-weight: 700; font-size: var(--t-1);
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg);
   }
-  .ef__req { color: var(--action); }
-  .ef input,
-  .ef select,
-  .ef textarea {
-    width: 100%;
-    padding: 0.65rem 0.75rem;
-    background: var(--sheet);
-    border: 1px solid var(--field);
-    border-radius: var(--radius);
-    font-size: var(--step--1);
-    line-height: 1.5;
-    transition: border-color 120ms ease;
+  .ef__req { color: var(--fg2); }
+  .ef input, .ef select, .ef textarea {
+    width: 100%; padding: 0.7rem 0.8rem;
+    background: var(--bg); color: var(--fg);
+    border: 2px solid var(--field);
+    font-size: var(--t0); line-height: 1.4;
+    transition: border-color 120ms;
   }
-  .ef textarea { resize: vertical; min-height: 7.5rem; }
-  .ef input:hover, .ef select:hover, .ef textarea:hover { border-color: var(--ink-3); }
-  .ef input:focus-visible, .ef select:focus-visible, .ef textarea:focus-visible {
-    border-color: var(--action);
-  }
+  .ef select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--fg) 50%), linear-gradient(135deg, var(--fg) 50%, transparent 50%); background-position: calc(100% - 18px) 55%, calc(100% - 12px) 55%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 2.2rem; }
+  .ef textarea { resize: vertical; min-height: 8rem; }
+  .ef input:hover, .ef select:hover, .ef textarea:hover { border-color: var(--fg); }
+  .ef input:focus-visible, .ef select:focus-visible, .ef textarea:focus-visible { border-color: var(--fg); outline-offset: 2px; }
   .ef input:user-invalid, .ef textarea:user-invalid { border-color: #c0392b; }
-  .ef__help { line-height: 1.45; }
-  .ef__foot {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    margin-block-start: 1.5rem;
-  }
-  .ef__note { flex: 1 1 22ch; max-width: 52ch; }
-  .ef__note a { color: var(--action); }
+  .ef__help { line-height: 1.4; color: var(--fg2); }
+  .ef__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin-block-start: 1.5rem; }
+  .ef__note { flex: 1 1 24ch; max-width: 52ch; color: var(--fg2); }
+  .ef__note a { color: var(--fg); text-decoration-color: var(--act-bg); }
+  .pl-y .ef__note a { text-decoration-color: var(--black); }
 </style>

@@ -1,135 +1,75 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import Section from '../../components/Section.astro';
+import Placard from '../../components/Placard.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { services } from '../../data/services';
 import { site, engagementSteps } from '../../data/site';
 
 const schema = [
-  {
-    '@type': 'CollectionPage',
-    '@id': `${site.url}/services/#page`,
-    url: `${site.url}/services/`,
-    name: 'Services',
-    isPartOf: { '@id': `${site.url}/#website` },
-  },
-  {
-    '@type': 'ItemList',
-    itemListElement: services.map((s, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      name: s.title,
-      url: `${site.url}${s.href}`,
-    })),
-  },
+  { '@type': 'CollectionPage', '@id': `${site.url}/services/#page`, url: `${site.url}/services/`, name: 'Services', isPartOf: { '@id': `${site.url}/#website` } },
+  { '@type': 'ItemList', itemListElement: services.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title, url: `${site.url}${s.href}` })) },
 ];
 ---
-<Base
-  title="Services"
-  image="/og/services.png"
-  description="Four ways to engage: sovereign inference, fine-tuning and testing, AI and robotics consulting, and facility upgrades — plus zero-emission power hire."
-  schema={schema}>
-  <PageHeader
-    eyebrow="Capability"
-    title="Four ways to engage."
-    lede="Everything here is delivered from our own facility by the people who built it. Scope is fixed in writing before any work starts, and the scoping fee is credited against delivery if you proceed."
-  />
+<Base title="Services" description="Four ways to engage: sovereign inference, fine-tuning and testing, AI and robotics consulting, and facility upgrades — plus zero-emission power hire." image="/og/services.png" schema={schema}>
+  <PageHeader title="Four ways to engage." lede="Everything here is delivered from our own facility by the people who built it. Scope is fixed in writing before any work starts, and the scoping fee is credited against delivery if you proceed." />
 
-  <Section rule={false}>
-    <div class="stack--lg stack service-list">
-      {services.map((s) => (
-        <article class="srv sheet">
-          <div class="srv__head">
-            <p class="anno">{s.no}</p>
+  <div class="wrap wall wall--top">
+    {services.map((s, n) => (
+      <Placard tone={n < 2 ? 'yellow' : 'black'} as="article" i={1 + n} class="srv">
+        <div class="split">
+          <div>
             <h2><a href={s.href}>{s.title}</a></h2>
-            <p class="muted srv__sum">{s.summary}</p>
+            <p class="lede" style="margin-block-start:0.9rem">{s.summary}</p>
+            <p class="tag" style="margin-block-start:1.25rem">{s.bought.replace(/^Bought as /, '')}<span>{s.leadTime}</span></p>
           </div>
-          <div class="srv__body">
-            <ul class="ticks">{s.deliverables.slice(0, 5).map((d) => <li>{d}</li>)}</ul>
-            <dl class="srv__meta">
-              <div><dt class="anno">Bought as</dt><dd class="small">{s.bought.replace(/^Bought as /, '')}</dd></div>
-              <div><dt class="anno">Lead time</dt><dd class="small">{s.leadTime}</dd></div>
-            </dl>
-            <p><a class="btn" href={s.href}>{s.linkLabel}</a></p>
+          <div>
+            <ul class="list">{s.deliverables.slice(0, 5).map((d) => <li>{d}</li>)}</ul>
+            <p style="margin-block-start:1.5rem"><a class="sw" href={s.href}>{s.linkLabel}</a></p>
           </div>
-        </article>
-      ))}
-
-      <article class="srv sheet srv--power">
-        <div class="srv__head">
-          <p class="anno">05</p>
-          <h2><a href="/power/">Zero-emission power hire</a></h2>
-          <p class="muted srv__sum">
-            250&nbsp;kVA hydrogen fuel-cell generation, hired out for events, construction, mining
-            and data-centre sites. No fumes, no mechanical noise, water as the only by-product.
-          </p>
         </div>
-        <div class="srv__body">
-          <ul class="ticks">
-            <li>250&nbsp;kVA per unit, 800&nbsp;A output, AC and DC</li>
+      </Placard>
+    ))}
+
+    <Placard tone="yellow" as="article" i={5} class="srv">
+      <div class="split">
+        <div>
+          <h2><a href="/power/">Zero-emission power hire</a></h2>
+          <p class="lede" style="margin-block-start:0.9rem">250 kVA hydrogen fuel-cell generation, hired out for events, construction, mining and data-centre sites. No fumes, no engine noise, water as the only by-product.</p>
+          <p class="tag" style="margin-block-start:1.25rem">Dry or wet hire, by the day, week or project<span>Lead time subject to fleet availability</span></p>
+        </div>
+        <div>
+          <ul class="list">
+            <li>250 kVA per unit, 800 A output, AC and DC</li>
             <li>Deployable in noise-restricted and indoor locations</li>
             <li>Grid-tied or fully standalone operation</li>
             <li>Replaces diesel sets without an exhaust or fuel-spill footprint</li>
           </ul>
-          <dl class="srv__meta">
-            <div><dt class="anno">Bought as</dt><dd class="small">Dry or wet hire, by the day, week or project</dd></div>
-            <div><dt class="anno">Lead time</dt><dd class="small">Subject to fleet availability — quoted on enquiry.</dd></div>
-          </dl>
-          <p><a class="btn" href="/power/">See the power sheet</a></p>
+          <p style="margin-block-start:1.5rem"><a class="sw" href="/power/">See the power sheet</a></p>
         </div>
-      </article>
-    </div>
-  </Section>
+      </div>
+    </Placard>
 
-  <Section no="06" label="Process" alt={true}>
-    <h2 class="sub">Every engagement runs the same way</h2>
-    <ol class="grid-sheet grid-4 steps">
-      {engagementSteps.map((s) => (
-        <li>
-          <span class="steps__n anno">{s.n}</span>
-          <h3>{s.title}</h3>
-          <p class="small muted">{s.body}</p>
-        </li>
-      ))}
-    </ol>
-  </Section>
-
+    <Placard tone="black" i={6}>
+      <h2 class="h-mid">Every engagement runs the same way</h2>
+      <ol class="steps">
+        {engagementSteps.map((s) => (
+          <li><span class="steps__n" aria-hidden="true">{s.n}</span><h3>{s.title}</h3><p class="sub">{s.body}</p></li>
+        ))}
+      </ol>
+    </Placard>
+  </div>
   <CtaBand />
 </Base>
 
 <style>
-  .service-list { --stack-gap: 1.5rem; }
-  .srv {
-    display: grid;
-    gap: 1.75rem;
-    padding: clamp(1.25rem, 0.9rem + 1.5vw, 2.25rem);
-  }
-  @media (min-width: 56rem) {
-    .srv { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 2.5rem; align-items: start; }
-  }
-  .srv h2 { font-size: var(--step-3); margin-block: 0.6rem 0.75rem; }
+  .wall--top { margin-block-start: clamp(0.9rem, 0.5rem + 1.6vw, 1.75rem); }
   .srv h2 a { text-decoration: none; }
-  .srv h2 a:hover { text-decoration: underline; text-decoration-color: var(--signal); text-decoration-thickness: 2px; }
-  .srv__sum { max-width: 42ch; font-size: var(--step--1); }
-  .srv__body > * + * { margin-block-start: 1.5rem; }
-  .srv__meta {
-    display: grid;
-    gap: 1rem;
-    padding-block-start: 1.25rem;
-    border-top: 1px solid var(--rule);
-  }
-  @media (min-width: 34rem) { .srv__meta { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .srv__meta dd { margin: 0; color: var(--ink-2); margin-block-start: 0.35rem; }
-  .srv--power { border-left: 3px solid var(--signal); }
-
-  .sub { font-size: var(--step-2); }
-  .steps { margin-block-start: 1.75rem; list-style: none; padding: 0; }
-  .steps__n {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 1.9rem; height: 1.9rem;
-    border: 1px solid var(--rule-strong); border-radius: var(--radius);
-    color: var(--ink); font-weight: 700;
-  }
-  .steps h3 { margin-block: 0.9rem 0.5rem; }
+  .srv h2 a:hover { text-decoration: underline; }
+  .h-mid { font-size: var(--t2); }
+  .steps { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 1.5rem; border-top: 2px solid var(--fg); }
+  @media (min-width: 52rem) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; } }
+  .steps li { padding-block-start: 1rem; }
+  .steps__n { display: block; font-family: var(--display); font-weight: 800; font-size: var(--t4); line-height: 0.85; }
+  .steps h3 { margin-block: 0.5rem; font-size: var(--t1); }
 </style>

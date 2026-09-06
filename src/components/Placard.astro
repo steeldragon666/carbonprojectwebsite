@@ -1,0 +1,30 @@
+---
+/**
+ * An enamel placard bolted to the wall. `tone` sets the material.
+ * `bleed` lets a placard run edge to edge (page headers). `i` staggers the
+ * bolt-on entrance.
+ */
+interface Props {
+  tone?: 'yellow' | 'black';
+  bleed?: boolean;
+  i?: number;
+  class?: string;
+  id?: string;
+  as?: 'section' | 'article' | 'div' | 'li' | 'aside';
+}
+const { tone = 'yellow', bleed = false, i = 0, class: cls = '', id, as = 'section' } = Astro.props;
+const Tag = as;
+const corners = ['tl', 'tr', 'bl', 'br'];
+---
+<Tag
+  id={id}
+  class:list={['placard', 'bolt', tone === 'yellow' ? 'pl-y' : 'pl-k', { 'placard--bleed': bleed }, cls]}
+  style={`--i:${i}`}>
+  {corners.map((c) => (
+    <svg class={`rivet rivet--${c}`} viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+      <circle cx="7" cy="7" r="6" fill="var(--bg)" stroke="var(--fg)" stroke-width="2" />
+      <path d="M4 7h6" stroke="var(--fg)" stroke-width="2" stroke-linecap="square" />
+    </svg>
+  ))}
+  <slot />
+</Tag>

@@ -90,6 +90,12 @@ enforceable. Confirm each one is how you actually operate before launch.
 | Weights, evaluation suite and data lineage handed over; client owns the trained model | `services/fine-tuning` |
 | Facility audit is written to be tendered to any contractor | `services/facility-upgrade` |
 
+## Imagery
+
+| Claim | Source | Status |
+| --- | --- | --- |
+| Every image on the site | Generated with Higgsfield (nano_banana_pro) from prompts embedded in each PNG under `src/assets/plates/` | ✅ Labelled "Illustrative image" on every plate and disclaimed in the footer. **None may be described, captioned or used as a photograph of the company's facility, equipment or people.** Replace with real photography when you have it; keep the label until then. |
+
 ## Legal pages
 
 `legal/privacy` and `legal/terms` were written for this site and describe

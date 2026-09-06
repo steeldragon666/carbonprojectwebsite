@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import Section from '../../components/Section.astro';
+import Placard from '../../components/Placard.astro';
 import { site } from '../../data/site';
 const updated = '2026-09-06';
 ---
@@ -10,16 +10,15 @@ const updated = '2026-09-06';
   description="Terms governing use of the carbonproject.ai website."
 >
   <PageHeader
-    eyebrow="Legal"
     title="Terms of use"
     lede={`Terms governing your use of this website. Last updated ${updated}.`}
-    crumbs={[]}
   />
 
-  <Section rule={false}>
-    <div class="flow legal">
+  <div class="wrap band">
+    <Placard tone="black" i={1} class="legal">
+    <div class="flow">
       <h2>Who we are</h2>
-      <p class="muted">
+      <p class="sub">
         This site is published by {site.legalName}, an Australian company established in
         {' '}{site.founded}, operating from {site.location.region}, {site.location.stateName}.
       </p>
@@ -79,11 +78,11 @@ const updated = '2026-09-06';
         Questions about these terms: <a href={`mailto:${site.email}`}>{site.email}</a>.
       </p>
     </div>
-  </Section>
+    </Placard>
+  </div>
 </Base>
 
 <style>
-  .legal { max-width: var(--measure); }
-  .legal h2 { font-size: var(--step-1); }
-  .legal a { color: var(--action); }
+  .legal { max-width: 78ch; }
+  .legal h2 { font-size: var(--t2); }
 </style>

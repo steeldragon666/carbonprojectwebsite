@@ -1,9 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
-import Section from '../components/Section.astro';
+import Placard from '../components/Placard.astro';
+import Plate from '../components/Plate.astro';
 import SingleLine from '../components/SingleLine.astro';
 import EnquiryForm from '../components/EnquiryForm.astro';
 import { site, offers, domains, facilitySpec, engagementSteps, pillars } from '../data/site';
+import hall from '../assets/plates/hall.png';
+import power from '../assets/plates/power.png';
+import peninsula from '../assets/plates/peninsula.png';
+import robot from '../assets/plates/robot.png';
 
 const schema = [
   {
@@ -25,260 +30,218 @@ const schema = [
   })),
 ];
 ---
-<Base
-  title={site.name}
-  description={site.description}
-  schema={schema}>
+<Base title={site.name} description={site.description} schema={schema}>
 
-  <!-- ── Hero ─────────────────────────────────────────────────────────── -->
-  <section class="hero">
-    <div class="wrap">
-      <div class="hero__top">
-        <h1>Sovereign AI inference, powered on site.</h1>
-        <div class="hero__aside">
-          <p class="lede">
-            We run and fine-tune AI models on hardware we own, at a self-powered research and
-            fabrication facility on the Mornington Peninsula, Victoria. Your data stays on our site,
-            under Australian jurisdiction, and leaves only when you say it does.
-          </p>
-          <div class="hero__actions">
-            <a class="btn" href="/contact/">Book a scoping call</a>
-            <a class="btn btn--ghost" href="/facility/">See what's on site</a>
-          </div>
+  <!-- First viewport: the hazard placard -->
+  <Placard tone="yellow" bleed={true} class="hero" i={0}>
+    <div class="wrap hero__in">
+      <p class="tag hero__id">
+        {site.legalName}
+        <span>Established {site.founded}</span>
+        <span>{site.location.region}, {site.location.state}</span>
+      </p>
+      <h1 class="hero__h">Your data never leaves this site.</h1>
+      <div class="hero__foot">
+        <p class="lede">
+          We run and fine-tune AI models on hardware we own, at a self-powered facility on the
+          Mornington Peninsula. Requests are answered on Australian soil, under Australian law, and
+          leave only when you say so.
+        </p>
+        <div class="hero__act">
+          <a class="sw" href="/contact/">Book a scoping call</a>
+          <a class="sw sw--ghost" href="/facility/">See what is on site</a>
         </div>
       </div>
-      <div class="hero__fig">
-        <SingleLine />
-      </div>
     </div>
-  </section>
+  </Placard>
 
-  <!-- ── Pillars ──────────────────────────────────────────────────────── -->
-  <section class="band band--rule pillars-band">
-    <div class="wrap">
-      <ul class="pillars">
-        {pillars.map((p) => (
+  <div class="wrap wall wall--top">
+
+    <!-- The mechanism, stencilled -->
+    <Placard tone="yellow" i={1} class="sld-pl">
+      <h2 class="h-sm">How the site is wired</h2>
+      <SingleLine />
+    </Placard>
+
+    <Placard tone="black" i={2}>
+      <dl class="plate pillars">
+        {pillars.map((p) => (<div><dt>{p.title}</dt><dd>{p.body}</dd></div>))}
+      </dl>
+    </Placard>
+
+    <!-- Offers: the first two are most of what we do, and they are bigger -->
+    <div class="offers">
+      <div class="offers__head">
+        <h2>Four ways to engage.</h2>
+        <p class="lede offers__lede">
+          Everything below is delivered from our own facility by the people who built it. Scope is
+          fixed in writing before any work starts, and the scoping fee is credited against delivery.
+        </p>
+      </div>
+
+      {offers.slice(0, 2).map((o, n) => (
+        <Placard tone="yellow" as="article" i={3 + n} class="offer offer--lg">
+          <h3><a href={o.href}>{o.title}</a></h3>
+          <p class="offer__sum">{o.summary}</p>
+          <ul class="list">{o.deliverables.slice(0, 4).map((d) => <li>{d}</li>)}</ul>
+          <div class="offer__foot">
+            <p class="small sub">{o.bought}</p>
+            <a class="sw" href={o.href}>{o.linkLabel}</a>
+          </div>
+        </Placard>
+      ))}
+
+      {offers.slice(2).map((o, n) => (
+        <Placard tone="black" as="article" i={5 + n} class="offer offer--sm">
+          <h3><a href={o.href}>{o.title}</a></h3>
+          <p class="offer__sum sub">{o.summary}</p>
+          <div class="offer__foot">
+            <p class="small sub">{o.bought}</p>
+            <a class="lk" href={o.href}>{o.linkLabel}</a>
+          </div>
+        </Placard>
+      ))}
+    </div>
+
+    <!-- Power -->
+    <Placard tone="black" i={7} id="power">
+      <div class="split split--even pw">
+        <div>
+          <h2>Silent power. No exhaust.</h2>
+          <p class="lede" style="margin-block-start:1rem">
+            Compute is a power question before it is a silicon question. We hire out the same class of
+            hydrogen fuel-cell generation we run ourselves, so it goes indoors and into noise-restricted
+            sites where a diesel set cannot.
+          </p>
+          <dl class="plate" style="margin-block-start:1.75rem">
+            <div><dt>Output</dt><dd>250 kVA per unit, AC and DC</dd></div>
+            <div><dt>Current</dt><dd>800 A per unit</dd></div>
+            <div><dt>Noise</dt><dd>No combustion, no engine</dd></div>
+            <div><dt>By-product</dt><dd>Water</dd></div>
+          </dl>
+          <p style="margin-block-start:1.75rem"><a class="sw" href="/power/">Zero-emission power hire</a></p>
+        </div>
+        <Plate src={power} alt="An industrial power enclosure on wet concrete at night with a single amber indicator lit" ratio="4 / 3" />
+      </div>
+    </Placard>
+
+    <!-- Facility -->
+    <Placard tone="yellow" i={8} id="facility">
+      <div class="fac__head">
+        <h2>We future-proofed our own site first.</h2>
+        <p class="lede">Everything we sell runs here before it is offered to anyone.</p>
+      </div>
+      <Plate src={peninsula} alt="Coastal scrub on a low ridge at blue hour with a single dark shed and one lit window" ratio="21 / 9" sizes="100vw" class="fac__plate" />
+      <div class="split fac__body">
+        <dl class="plate">
+          {facilitySpec.slice(0, 3).map((r) => (<div><dt>{r.k}</dt><dd>{r.v}</dd></div>))}
+        </dl>
+        <dl class="plate">
+          {facilitySpec.slice(3).map((r) => (<div><dt>{r.k}</dt><dd>{r.v}</dd></div>))}
+        </dl>
+      </div>
+      <p style="margin-block-start:1.5rem"><a class="lk" href="/facility/">Read the facility sheet</a></p>
+    </Placard>
+
+    <!-- Research -->
+    <Placard tone="black" i={9} id="research">
+      <div class="split">
+        <div>
+          <h2>Five domains. One workshop.</h2>
+          <p class="lede" style="margin-block-start:1rem">
+            Carbon Project Australia is the R&amp;D performing entity and research conveyor for its
+            partner companies. Each domain has working hardware behind it.
+          </p>
+          <Plate src={robot} alt="A six-axis robot arm in silhouette against a single warm work light in a dark workshop" ratio="16 / 10" class="res__plate" />
+        </div>
+        <dl class="plate">
+          {domains.map((d) => (
+            <div>
+              <dt>{d.name}</dt>
+              <dd>{d.body}{d.badge && <span class="badge">{d.badge}</span>}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <p style="margin-block-start:1.5rem"><a class="lk" href="/research/">Read the research sheet</a></p>
+    </Placard>
+
+    <!-- Process: a real sequence, so the numbers are earned -->
+    <Placard tone="yellow" i={10} id="how">
+      <h2>How an engagement runs.</h2>
+      <p class="lede" style="margin-block-start:0.75rem">Short, fixed and measurable. You see a result before you commit to anything ongoing.</p>
+      <ol class="steps">
+        {engagementSteps.map((s) => (
           <li>
-            <h2>{p.title}</h2>
-            <p class="small muted">{p.body}</p>
+            <span class="steps__n" aria-hidden="true">{s.n}</span>
+            <h3>{s.title}</h3>
+            <p class="sub">{s.body}</p>
           </li>
         ))}
-      </ul>
-    </div>
-  </section>
+      </ol>
+      <p style="margin-block-start:1.5rem"><a class="lk" href="/how-we-work/">Read how we work</a></p>
+    </Placard>
 
-  <!-- ── Offers ───────────────────────────────────────────────────────── -->
-  <Section id="services" no="01" label="Ways to engage" alt={true}>
-    <div class="split split--wide">
-      <div class="split__aside">
-        <h2>Four ways to engage. The first two are most of what we do.</h2>
-      </div>
-      <p class="muted">
-        Everything below is delivered from our own facility by the people who built it. Scope is
-        fixed in writing before any work starts, and the scoping fee is credited against delivery if
-        you proceed.
-      </p>
-    </div>
-
-    <div class="grid-sheet grid-2 offers">
-      {offers.map((o) => (
-        <article class="offer">
-          <p class="anno">{o.no}</p>
-          <h3><a href={o.href}>{o.title}</a></h3>
-          <p class="small muted offer__sum">{o.summary}</p>
-          <ul class="ticks">
-            {o.deliverables.slice(0, 4).map((d) => <li>{d}</li>)}
-          </ul>
-          <p class="offer__foot">
-            <span class="anno">{o.bought}</span>
-            <a class="tlink" href={o.href}>{o.linkLabel} →</a>
-          </p>
-        </article>
-      ))}
-    </div>
-  </Section>
-
-  <!-- ── Power ────────────────────────────────────────────────────────── -->
-  <Section id="power" no="02" label="Zero-emission power">
-    <div class="split split--wide">
-      <div class="split__aside">
-        <h2>Power first, then compute.</h2>
-        <p class="muted" style="margin-block-start:1.25rem">
-          Compute is a power question before it is a silicon question. We hire out the same class of
-          hydrogen fuel-cell generation we run ourselves: 250&nbsp;kVA in a compact package, no fumes,
-          no mechanical noise, and water as the only by-product — so it goes indoors and into
-          noise-restricted sites where a diesel set cannot.
-        </p>
-        <p style="margin-block-start:1.5rem">
-          <a class="btn" href="/power/">Zero-emission power hire</a>
-        </p>
-      </div>
-      <div>
-        <dl class="rows">
-          <div><dt>Output</dt><dd>250&nbsp;kVA per unit, AC and DC via intelligent controllers</dd></div>
-          <div><dt>Current</dt><dd>800&nbsp;A per unit</dd></div>
-          <div><dt>Noise</dt><dd>No mechanical noise — deployable in noise-restricted sites</dd></div>
-          <div><dt>Emissions</dt><dd>No exhaust, no particulates. Water is the only by-product</dd></div>
-          <div><dt>Siting</dt><dd>Grid-tied or standalone; indoor installation possible</dd></div>
-          <div><dt>Typical use</dt><dd>Events, construction, mining, data centres and telecommunications</dd></div>
-        </dl>
-      </div>
-    </div>
-  </Section>
-
-  <!-- ── Facility ─────────────────────────────────────────────────────── -->
-  <Section id="facility" no="03" label="The facility" alt={true}>
-    <div class="split split--wide">
-      <div class="split__aside">
-        <h2>The facility</h2>
-        <p class="muted" style="margin-block-start:1.25rem">
-          We future-proofed our own site before offering to do yours. Everything we sell runs here
-          first.
-        </p>
-        <p style="margin-block-start:1.5rem">
-          <a class="tlink" href="/facility/">Read the facility sheet →</a>
-        </p>
-      </div>
-      <div>
-        <dl class="rows">
-          {facilitySpec.map((r) => (<div><dt>{r.k}</dt><dd>{r.v}</dd></div>))}
-        </dl>
-      </div>
-    </div>
-  </Section>
-
-  <!-- ── Research ─────────────────────────────────────────────────────── -->
-  <Section id="research" no="04" label="Research and development">
-    <div class="split split--wide">
-      <div class="split__aside">
-        <h2>Research and development in five domains.</h2>
-      </div>
-      <p class="muted">
-        Carbon Project Australia is the R&amp;D performing entity and research conveyor for its
-        partner companies. Each domain below has working hardware behind it, not just a slide.
-        <a class="tlink" href="/research/" style="display:inline-block;margin-block-start:0.75rem">See the research sheet →</a>
-      </p>
-    </div>
-    <dl class="rows domains">
-      {domains.map((d) => (
+    <!-- Contact -->
+    <Placard tone="black" i={11} id="contact">
+      <div class="split">
         <div>
-          <dt>{d.name}</dt>
-          <dd>
-            {d.body}
-            {d.badge && <span class="badge domains__badge">{d.badge}</span>}
-          </dd>
+          <h2>Tell us what you need.</h2>
+          <dl class="plate" style="margin-block-start:1.5rem">
+            <div><dt>Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+            <div><dt>Site</dt><dd>{site.location.region}, {site.location.stateName}. {site.location.note}</dd></div>
+            <div><dt>Response</dt><dd>{site.responseTime}</dd></div>
+          </dl>
+          <Plate src={hall} alt="Rows of dark server racks receding into shadow, one warm light along an edge" ratio="21 / 9" class="con__plate" />
         </div>
-      ))}
-    </dl>
-  </Section>
-
-  <!-- ── Process ──────────────────────────────────────────────────────── -->
-  <Section id="how" no="05" label="How an engagement runs" alt={true}>
-    <div class="split split--wide">
-      <div class="split__aside">
-        <h2>How an engagement runs.</h2>
-      </div>
-      <p class="muted">
-        Short, fixed and measurable. You see a result before you commit to anything ongoing, and
-        nothing rolls over on its own.
-        <a class="tlink" href="/how-we-work/" style="display:inline-block;margin-block-start:0.75rem">Read how we work →</a>
-      </p>
-    </div>
-    <ol class="grid-sheet grid-4 steps">
-      {engagementSteps.map((s) => (
-        <li>
-          <span class="steps__n anno">{s.n}</span>
-          <h3>{s.title}</h3>
-          <p class="small muted">{s.body}</p>
-        </li>
-      ))}
-    </ol>
-  </Section>
-
-  <!-- ── Contact ──────────────────────────────────────────────────────── -->
-  <Section id="contact" no="06" label="Enquiries">
-    <div class="split split--wide">
-      <div class="split__aside">
-        <h2>Tell us what you need.</h2>
-        <dl class="rows contact-rows">
-          <div><dt>Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
-          <div><dt>Location</dt><dd>{site.location.region}, {site.location.stateName} — {site.location.note}</dd></div>
-          <div><dt>Response</dt><dd>{site.responseTime}</dd></div>
-        </dl>
-      </div>
-      <div>
         <EnquiryForm id="home-enquiry" />
       </div>
-    </div>
-  </Section>
+    </Placard>
+  </div>
 </Base>
 
 <style>
-  .hero { padding-block: clamp(2.5rem, 1.6rem + 4.2vw, 5rem) clamp(2rem, 1.4rem + 3vw, 3.5rem); }
-  .hero__top {
-    display: grid;
-    gap: clamp(1.5rem, 1rem + 2.4vw, 3.5rem);
-    align-items: end;
-  }
+  .hero { padding-block: clamp(1.75rem, 1rem + 3vw, 3.5rem) clamp(1.75rem, 1rem + 2.6vw, 3.25rem); min-height: min(86svh, 50rem); display: flex; }
+  .hero__in { display: flex; flex-direction: column; gap: clamp(1.5rem, 1rem + 3vw, 3.5rem); }
+  .hero__id { align-self: flex-start; }
+  @media (min-width: 48rem) { .hero__id { align-self: flex-end; } }
+  .hero__h { font-size: var(--t5); max-width: 11ch; margin-block-start: auto; }
+  .hero__foot { display: grid; gap: 1.5rem; align-items: end; }
+  @media (min-width: 60rem) { .hero__foot { grid-template-columns: minmax(0, 1fr) auto; gap: 3rem; } }
+  .hero__act { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  .wall--top { margin-block-start: clamp(0.9rem, 0.5rem + 1.6vw, 1.75rem); padding-block-end: var(--band); }
+  .h-sm { font-size: var(--t2); margin-block-end: 1.25rem; }
+
+  .pillars dt { font-size: var(--t2); }
+  .pillars dd { max-width: 60ch; }
+
+  .offers { display: grid; gap: clamp(0.9rem, 0.5rem + 1.6vw, 1.75rem); }
+  .offers__head { display: grid; gap: 1rem; padding-block: clamp(1rem, 0.6rem + 2vw, 2.5rem) 0.5rem; }
   @media (min-width: 60rem) {
-    .hero__top { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+    .offers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .offers__head { grid-column: 1 / -1; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: end; }
   }
-  .hero h1 { max-width: 11ch; }
-  .hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-block-start: 1.75rem; }
-  .hero__fig { margin-block-start: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); }
-
-  .pillars-band { padding-block: clamp(2rem, 1.5rem + 2vw, 3rem); }
-  .pillars {
-    display: grid;
-    gap: 2rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  @media (min-width: 52rem) { .pillars { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem; } }
-  .pillars h2 { font-size: var(--step-0); margin-block-end: 0.5rem; }
-
-  .offers { margin-block-start: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem); }
   .offer { display: flex; flex-direction: column; }
-  .offer h3 { margin-block: 0.75rem 0.65rem; font-size: var(--step-2); }
   .offer h3 a { text-decoration: none; }
-  .offer h3 a:hover { text-decoration: underline; text-decoration-color: var(--signal); text-decoration-thickness: 2px; }
-  .offer__sum { max-width: 46ch; }
-  .offer .ticks { margin-block-start: 1.1rem; }
-  .offer__foot {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-block-start: auto;
-    padding-block-start: 1.5rem;
-  }
+  .offer h3 a:hover { text-decoration: underline; }
+  .offer__sum { margin-block: 0.9rem 1.1rem; max-width: 48ch; }
+  .offer--lg h3 { font-size: var(--t3); }
+  .offer--sm h3 { font-size: var(--t2); }
+  .offer__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; margin-block-start: auto; padding-block-start: 1.5rem; }
 
-  .rows { margin-block-start: 0; }
-  .rows a { color: var(--action); }
-  .domains { margin-block-start: clamp(1.75rem, 1.2rem + 2vw, 2.5rem); }
-  .domains dt { font-size: var(--step-1); }
-  .domains dd { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: baseline; justify-content: space-between; }
-  .domains__badge { flex: none; }
-  .contact-rows { margin-block-start: 1.75rem; }
+  .fac__head { display: grid; gap: 0.75rem; margin-block-end: 1.5rem; }
+  @media (min-width: 60rem) { .fac__head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; } }
+  .fac__body { margin-block-start: 1.5rem; }
+  @media (min-width: 60rem) { .fac__body { grid-template-columns: 1fr 1fr; } }
+  .res__plate { margin-block-start: 1.5rem; }
+  .con__plate { margin-block-start: 1.5rem; }
 
-  .steps {
-    margin-block-start: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
-    list-style: none;
-    padding: 0;
-    counter-reset: none;
-  }
-  .steps__n {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.9rem;
-    height: 1.9rem;
-    border: 1px solid var(--rule-strong);
-    border-radius: var(--radius);
-    color: var(--ink);
-    font-weight: 700;
-  }
-  .steps h3 { margin-block: 0.9rem 0.5rem; }
+  .badge { display: inline-block; margin-inline-start: 0.6rem; padding: 0.15rem 0.5rem; border: 2px solid var(--fg); color: var(--fg); font-family: var(--display); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; vertical-align: middle; }
+
+  .steps { list-style: none; margin: 1.75rem 0 0; padding: 0; display: grid; gap: 1.5rem; border-top: 2px solid var(--fg); }
+  @media (min-width: 52rem) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; } }
+  .steps li { padding-block-start: 1rem; }
+  .steps__n { display: block; font-family: var(--display); font-weight: 800; font-size: var(--t4); line-height: 0.85; }
+  .steps h3 { margin-block: 0.5rem 0.5rem; }
 </style>

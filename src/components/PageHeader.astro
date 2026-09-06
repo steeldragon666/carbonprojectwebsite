@@ -1,14 +1,14 @@
 ---
+import Placard from './Placard.astro';
 interface Props {
-  eyebrow?: string;
   title: string;
   lede?: string;
-  /** Breadcrumb trail, excluding Home and the current page. */
   crumbs?: { label: string; href: string }[];
+  tone?: 'yellow' | 'black';
 }
-const { eyebrow, title, lede, crumbs = [] } = Astro.props;
+const { title, lede, crumbs = [], tone = 'yellow' } = Astro.props;
 ---
-<section class="page-head">
+<Placard tone={tone} bleed={true} class="ph">
   <div class="wrap">
     <nav aria-label="Breadcrumb" class="crumbs">
       <ol>
@@ -17,34 +17,18 @@ const { eyebrow, title, lede, crumbs = [] } = Astro.props;
         <li><span aria-current="page">{title}</span></li>
       </ol>
     </nav>
-    {eyebrow && <p class="anno anno--ink page-head__eyebrow">{eyebrow}</p>}
     <h1>{title}</h1>
-    {lede && <p class="lede page-head__lede">{lede}</p>}
+    {lede && <p class="lede ph__lede">{lede}</p>}
+    <slot />
   </div>
-</section>
+</Placard>
 
 <style>
-  .page-head {
-    padding-block: clamp(2rem, 1.4rem + 2.6vw, 3.75rem) clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
-    border-bottom: 1px solid var(--rule);
-  }
-  .crumbs ol {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    list-style: none;
-    margin: 0 0 1.5rem;
-    padding: 0;
-    font-family: var(--mono);
-    font-size: var(--step--2);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
-  .crumbs li + li::before { content: '/'; margin-inline-end: 0.4rem; color: var(--rule-strong); }
-  .crumbs a { color: var(--ink-3); text-decoration: none; }
-  .crumbs a:hover { color: var(--ink); }
-  .page-head__eyebrow { margin-block-end: 0.9rem; }
-  .page-head h1 { max-width: 18ch; font-size: var(--step-4); }
-  .page-head__lede { margin-block-start: 1.25rem; max-width: 56ch; }
+  .ph { padding-block: clamp(2rem, 1.4rem + 3vw, 4rem) clamp(2rem, 1.4rem + 2.6vw, 3.5rem); }
+  .crumbs ol { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 0 0 1.5rem; padding: 0; font-size: var(--t-1); font-weight: 500; color: var(--fg2); }
+  .crumbs li + li::before { content: '/'; margin-inline-end: 0.5rem; }
+  .crumbs a { color: var(--fg2); text-decoration: none; }
+  .crumbs a:hover { color: var(--fg); text-decoration: underline; }
+  .ph h1 { max-width: 16ch; }
+  .ph__lede { margin-block-start: 1.25rem; max-width: 52ch; }
 </style>

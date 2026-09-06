@@ -9,52 +9,44 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const b64 = (p) => readFileSync(root + p).toString('base64');
 
-const display = b64('node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2');
-const body = b64('node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2');
-const mono = b64('node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2');
+const display = b64('node_modules/@fontsource-variable/big-shoulders-display/files/big-shoulders-display-latin-wght-normal.woff2');
+const body = b64('node_modules/@fontsource/barlow/files/barlow-latin-500-normal.woff2');
 
 const cards = [
-  { file: 'default', eyebrow: 'Capability statement', title: 'Sovereign AI inference, powered on site.', sub: 'Mornington Peninsula, Victoria · Established 2019' },
-  { file: 'services', eyebrow: 'Services', title: 'Four ways to engage.', sub: 'Inference · Fine-tuning · Robotics · Facilities' },
-  { file: 'sovereign-inference', eyebrow: '01 — Service', title: 'Sovereign inference', sub: 'Dedicated on-shore capacity on hardware we own' },
-  { file: 'fine-tuning', eyebrow: '02 — Service', title: 'Fine-tuning, modification and testing', sub: 'Fixed scope. Measured before it ships.' },
-  { file: 'ai-robotics-consulting', eyebrow: '03 — Service', title: 'AI and robotics consulting', sub: 'Agent architecture and physical automation' },
-  { file: 'facility-upgrade', eyebrow: '04 — Service', title: 'Facility upgrading and future-proofing', sub: 'Site audit, then staged works' },
-  { file: 'power', eyebrow: '05 — Zero-emission power', title: 'Silent power. No exhaust.', sub: '250 kVA hydrogen fuel cells · 800 A per unit' },
-  { file: 'facility', eyebrow: 'The facility', title: 'We future-proofed our own site first.', sub: 'Compute · Power · Robotics · Fabrication' },
-  { file: 'research', eyebrow: 'Research and development', title: 'Five domains, one workshop.', sub: 'Environmental · Defence · Energy · Agriculture · E-commerce' },
-  { file: 'how-we-work', eyebrow: 'How we work', title: 'Short, fixed, and measurable.', sub: 'Scope · Pilot · Deploy · Operate' },
-  { file: 'contact', eyebrow: 'Enquiries', title: 'Tell us what you need.', sub: 'aaron@carbonproject.com.au · One business day' },
+  { file: 'default', title: 'Your data never leaves this site.', sub: 'Sovereign AI inference, robotics and zero-emission power, on hardware we own in Victoria.' },
+  { file: 'services', title: 'Four ways to engage.', sub: 'Sovereign inference. Fine-tuning and testing. AI and robotics consulting. Facility upgrades.' },
+  { file: 'sovereign-inference', title: 'Sovereign inference', sub: 'Dedicated on-shore capacity on hardware we own. Reserved, never resold.' },
+  { file: 'fine-tuning', title: 'Fine-tuning, modification and testing', sub: 'Fixed scope. Measured before it ships.' },
+  { file: 'ai-robotics-consulting', title: 'AI and robotics consulting', sub: 'Agent architecture and physical automation, from review to working cell.' },
+  { file: 'facility-upgrade', title: 'Facility upgrading and future-proofing', sub: 'Site audit, then staged works.' },
+  { file: 'power', title: 'Silent power. No exhaust.', sub: '250 kVA hydrogen fuel-cell generation for hire. 800 A per unit.' },
+  { file: 'facility', title: 'We future-proofed our own site first.', sub: 'Compute, power, robotics and fabrication under one roof.' },
+  { file: 'research', title: 'Five domains. One workshop.', sub: 'Environmental, defence, energy, agriculture, e-commerce.' },
+  { file: 'how-we-work', title: 'Short, fixed, and measurable.', sub: 'Scope. Pilot. Deploy. Operate.' },
+  { file: 'contact', title: 'Tell us what you need.', sub: 'aaron@carbonproject.com.au. We reply within one business day.' },
 ];
 
+const rivet = (x, y) => `<svg style="position:absolute;left:${x}px;top:${y}px" width="22" height="22" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#f5c400" stroke="#000" stroke-width="2"/><path d="M4 7h6" stroke="#000" stroke-width="2" stroke-linecap="square"/></svg>`;
+
 const html = (c) => `<!doctype html><meta charset="utf-8"><style>
-@font-face{font-family:SG;src:url(data:font/woff2;base64,${display}) format('woff2');font-weight:100 900}
-@font-face{font-family:IN;src:url(data:font/woff2;base64,${body}) format('woff2');font-weight:100 900}
-@font-face{font-family:JB;src:url(data:font/woff2;base64,${mono}) format('woff2');font-weight:100 900}
+@font-face{font-family:BS;src:url(data:font/woff2;base64,${display}) format('woff2');font-weight:100 900}
+@font-face{font-family:BA;src:url(data:font/woff2;base64,${body}) format('woff2');font-weight:500}
 *{margin:0;box-sizing:border-box}
-body{width:1200px;height:630px;background:#f4f3ef;color:#14150f;font-family:IN,sans-serif;
-  display:flex;flex-direction:column;justify-content:space-between;padding:64px 72px;
-  border-bottom:14px solid #edb200}
-.top{display:flex;align-items:center;gap:14px}
-.mark{width:34px;height:34px;border:2px solid #14150f;border-radius:3px;background:#edb200;position:relative}
-.mark i{position:absolute;background:#14150f}
-.mark .bus{left:5px;right:5px;height:3px;bottom:9px}
-.mark .a{width:3px;height:11px;left:8px;bottom:11px}
-.mark .b{width:3px;height:17px;left:15px;bottom:11px}
-.mark .c{width:3px;height:8px;left:22px;bottom:11px}
-.brand{font-family:SG;font-weight:600;font-size:24px;letter-spacing:-.02em}
-.eyebrow{font-family:JB;font-size:16px;letter-spacing:.12em;text-transform:uppercase;color:#74766c;
-  padding-bottom:22px;border-bottom:1px solid #d5d3c9;margin-bottom:26px}
-h1{font-family:SG;font-weight:600;font-size:${c.title.length > 34 ? 62 : 76}px;line-height:1.03;letter-spacing:-.028em;max-width:16ch}
-.sub{font-family:JB;font-size:19px;color:#4a4c43;letter-spacing:.01em;margin-top:26px}
-.foot{display:flex;justify-content:space-between;align-items:baseline;font-family:JB;font-size:15px;
-  letter-spacing:.09em;text-transform:uppercase;color:#74766c;border-top:1px solid #d5d3c9;padding-top:20px}
+body{width:1200px;height:630px;background:#000;padding:26px;font-family:BA,sans-serif}
+.pl{position:relative;width:100%;height:100%;background:#f5c400;color:#000;padding:64px 72px;display:flex;flex-direction:column;justify-content:space-between}
+.pl::before{content:'';position:absolute;inset:18px;border:3px solid #000;pointer-events:none}
+.id{display:inline-block;align-self:flex-end;border:3px solid #000;padding:10px 14px;font-family:BS;font-weight:700;font-size:20px;letter-spacing:.06em;text-transform:uppercase;line-height:1.15}
+.id span{display:block;font-family:BA;font-weight:500;text-transform:none;letter-spacing:0;font-size:17px;color:#3f3b28}
+h1{font-family:BS;font-weight:800;text-transform:uppercase;font-size:${c.title.length > 30 ? 96 : 118}px;line-height:.88;letter-spacing:.005em;max-width:11ch}
+.sub{font-size:26px;line-height:1.3;color:#3f3b28;max-width:38ch;margin-top:22px}
+.foot{display:flex;justify-content:space-between;font-family:BS;font-weight:700;font-size:20px;letter-spacing:.08em;text-transform:uppercase;border-top:3px solid #000;padding-top:16px}
 </style>
-<body>
-<div class="top"><span class="mark"><i class="bus"></i><i class="a"></i><i class="b"></i><i class="c"></i></span><span class="brand">Carbon Project Australia</span></div>
-<div><div class="eyebrow">${c.eyebrow}</div><h1>${c.title}</h1><div class="sub">${c.sub}</div></div>
-<div class="foot"><span>carbonproject.ai</span><span>Scale NTS</span></div>
-</body>`;
+<body><div class="pl">
+${rivet(7,7)}${rivet(1200-52-7-22,7)}${rivet(7,630-52-7-22)}${rivet(1200-52-7-22,630-52-7-22)}
+<div class="id">Carbon Project Australia<span>Established 2019. Mornington Peninsula, VIC</span></div>
+<div><h1>${c.title}</h1><div class="sub">${c.sub}</div></div>
+<div class="foot"><span>carbonproject.ai</span><span>Sovereign by design</span></div>
+</div></body>`;
 
 mkdirSync(root + 'public/og', { recursive: true });
 const browser = await chromium.launch({

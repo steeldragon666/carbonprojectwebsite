@@ -1,119 +1,57 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import Section from '../components/Section.astro';
+import Placard from '../components/Placard.astro';
+import Plate from '../components/Plate.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site, domains } from '../data/site';
+import robot from '../assets/plates/robot.png';
 
 const detail: Record<string, string[]> = {
-  Environmental: [
-    'Autonomous restoration platforms for degraded and remote landscapes',
-    'Soil-carbon measurement built on six years in soil-carbon trading and measurement technology',
-    'Machine-vision species identification and survival assessment',
-  ],
-  Defence: [
-    'Hybrid-energy autonomous resupply vehicles for the Australian environment',
-    'Counter-UAS sensing and detection research',
-    'Sovereign inference for workloads that cannot leave Australian jurisdiction',
-  ],
-  Energy: [
-    'Hydrogen fuel-cell power systems, in the field and at our own facility',
-    'Biofuel feedstock processing with partner companies',
-    'Advanced carbon materials',
-  ],
-  Agriculture: [
-    'High-yield biomass feedstock systems',
-    'Robotic cultivation and precision planting at scale',
-    'Sensing and yield modelling on working ground, not test plots',
-  ],
-  'E-commerce': [
-    'Agentic storefront operations',
-    'Sovereign content generation on models we host ourselves',
-    'Margin modelling, tested on brands we own and operate',
-  ],
+  Environmental: ['Autonomous restoration platforms for degraded and remote landscapes', 'Soil-carbon measurement built on six years in soil-carbon trading and measurement technology', 'Machine-vision species identification and survival assessment'],
+  Defence: ['Hybrid-energy autonomous resupply vehicles for the Australian environment', 'Counter-UAS sensing and detection research', 'Sovereign inference for workloads that cannot leave Australian jurisdiction'],
+  Energy: ['Hydrogen fuel-cell power systems, in the field and at our own facility', 'Biofuel feedstock processing with partner companies', 'Advanced carbon materials'],
+  Agriculture: ['High-yield biomass feedstock systems', 'Robotic cultivation and precision planting at scale', 'Sensing and yield modelling on working ground, not test plots'],
+  'E-commerce': ['Agentic storefront operations', 'Sovereign content generation on models we host ourselves', 'Margin modelling, tested on brands we own and operate'],
 };
-
-const schema = [
-  {
-    '@type': 'WebPage',
-    '@id': `${site.url}/research/#page`,
-    url: `${site.url}/research/`,
-    name: 'Research and development',
-    isPartOf: { '@id': `${site.url}/#website` },
-  },
-];
+const schema = [{ '@type': 'WebPage', '@id': `${site.url}/research/#page`, url: `${site.url}/research/`, name: 'Research and development', isPartOf: { '@id': `${site.url}/#website` } }];
 ---
-<Base
-  title="Research and development"
-  image="/og/research.png"
-  description="Carbon Project Australia is the R&D performing entity for its partner companies, across environmental, defence, energy, agriculture and e-commerce."
-  schema={schema}>
-  <PageHeader
-    eyebrow="04 — Research and development"
-    title="Five domains, one workshop."
-    lede="Carbon Project Australia is the R&D performing entity and research conveyor for its partner companies. Each domain below has working hardware behind it, not just a slide."
-  />
+<Base title="Research and development" description="Carbon Project Australia is the R&D performing entity for its partner companies, across environmental, defence, energy, agriculture and e-commerce." image="/og/research.png" schema={schema}>
+  <PageHeader title="Five domains. One workshop." lede="Carbon Project Australia is the R&D performing entity and research conveyor for its partner companies. Each domain below has working hardware behind it, not just a slide." />
 
-  <Section rule={false}>
-    <div class="stack stack--lg domains">
-      {domains.map((d, i) => (
-        <article class="domain sheet">
-          <div class="domain__head">
-            <p class="anno">{String(i + 1).padStart(2, '0')}</p>
+  <div class="wrap wall wall--top">
+    {domains.map((d, i) => (
+      <Placard tone={i % 2 === 0 ? 'yellow' : 'black'} as="article" i={1 + i}>
+        <div class="split">
+          <div>
             <h2>{d.name}</h2>
-            {d.badge && <p><span class="badge">{d.badge}</span></p>}
+            {d.badge && <p class="tag" style="margin-block-start:1rem">{d.badge}</p>}
+            {i === 1 && <Plate src={robot} alt="A six-axis robot arm in silhouette against a single warm work light" ratio="16 / 10" class="mt" />}
           </div>
-          <div class="domain__body">
-            <p class="muted">{d.body}</p>
-            <ul class="ticks" style="margin-block-start:1.25rem">
-              {(detail[d.name] ?? []).map((li) => <li>{li}</li>)}
-            </ul>
+          <div class="flow">
+            <p class="lede">{d.body}</p>
+            <ul class="list">{(detail[d.name] ?? []).map((li) => <li>{li}</li>)}</ul>
           </div>
-        </article>
-      ))}
-    </div>
-  </Section>
+        </div>
+      </Placard>
+    ))}
 
-  <Section no="A" label="How we work with partners" alt={true}>
-    <div class="split split--wide">
-      <div class="split__aside"><h2 class="sub">How the research conveyor works</h2></div>
-      <div class="flow">
-        <p class="muted">
-          Partner companies bring a commercial problem with a physical constraint attached. We do the
-          research, build the hardware, and hand back something that either works on their site or is
-          honestly reported as not working yet.
-        </p>
-        <p class="muted">
-          Research that produces a negative result is still delivered as a report rather than quietly
-          absorbed, because a documented dead end is worth more to a partner than an optimistic
-          status update. Where the work is eligible, the documentation is written so it also stands
-          up as an R&amp;D tax or grant record.
-        </p>
-        <p class="muted">
-          If you have a problem that needs both a model and a machine, that is the shape of work this
-          group exists for.
-        </p>
+    <Placard tone="black" i={6}>
+      <div class="split">
+        <h2 class="h-mid">How the research conveyor works</h2>
+        <div class="flow">
+          <p class="sub">Partner companies bring a commercial problem with a physical constraint attached. We do the research, build the hardware, and hand back something that either works on their site or is honestly reported as not working yet.</p>
+          <p class="sub">Research that produces a negative result is still delivered as a report rather than quietly absorbed, because a documented dead end is worth more to a partner than an optimistic status update. Where the work is eligible, the documentation is written so it also stands up as an R&amp;D tax or grant record.</p>
+          <p class="sub">If you have a problem that needs both a model and a machine, that is the shape of work this group exists for.</p>
+        </div>
       </div>
-    </div>
-  </Section>
-
-  <CtaBand
-    title="Bring us a hard problem."
-    body="Partner research starts the same way everything else does: a short call and a written brief that says what we would do and what it would cost."
-    primary="Start a conversation"
-  />
+    </Placard>
+  </div>
+  <CtaBand title="Bring us a hard problem." body="Partner research starts the same way everything else does: a short call and a written brief that says what we would do and what it would cost." primary="Start a conversation" />
 </Base>
 
 <style>
-  .sub { font-size: var(--step-2); }
-  .domains { --stack-gap: 1.5rem; }
-  .domain {
-    display: grid;
-    gap: 1.5rem;
-    padding: clamp(1.25rem, 0.9rem + 1.5vw, 2.25rem);
-  }
-  @media (min-width: 56rem) {
-    .domain { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 2.5rem; align-items: start; }
-  }
-  .domain h2 { font-size: var(--step-3); margin-block: 0.6rem 0.75rem; }
+  .wall--top { margin-block-start: clamp(0.9rem, 0.5rem + 1.6vw, 1.75rem); }
+  .h-mid { font-size: var(--t2); }
+  .mt { margin-block-start: 1.5rem; }
 </style>
