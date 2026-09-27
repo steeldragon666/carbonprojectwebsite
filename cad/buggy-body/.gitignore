@@ -1,4 +1,5 @@
-cad/buggy-body/exports/*.step
-cad/buggy-body/exports/*.stl
-cad/buggy-body/exports/*.f3d
-cad/buggy-body/fusion_report.json
+*.step
+*.stl
+*.f3d
+__pycache__/
+fusion_report.json
