@@ -1,0 +1,4 @@
+cad/buggy-body/exports/*.step
+cad/buggy-body/exports/*.stl
+cad/buggy-body/exports/*.f3d
+cad/buggy-body/fusion_report.json
