@@ -1,0 +1,5 @@
+*.step
+*.stl
+*.f3d
+__pycache__/
+fusion_report.json
